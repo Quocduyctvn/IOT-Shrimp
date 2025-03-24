@@ -1,0 +1,90 @@
+﻿@model EcoShrimp.Admin.Areas.Admin.ViewModels.CateNews.CateNewsVM
+@{
+    var status = TempData["status"] as List<SelectListItem>;
+}
+
+<div class="modal fade" id="CreateCateNews" tabindex="-1" role="dialog" aria-labelledby="CreateCateNewsLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 700px">
+            <form asp-action="Create" asp-controller="AdminCateNews" id="CreateCateNewsForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title fs-6" id="CreateCateNewsLabel">Thêm mới loại tin</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0px">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+                            <span style="font-size: 12px;">Ngày tạo: @DateTime.Now.ToString("dd/MM/yy")</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="py-2">Tên loại: <span style="color: red;">*</span></div>
+                            <input type="text" asp-for="Name" class="form-control" placeholder="Vd: Tin tức Kỹ thuật Nuôi Tôm" />
+                            <span asp-validation-for="Name" id="NameError" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <div class="py-2">Trạng thái hoạt động: <span style="color: red;">*</span></div>
+                            <select asp-for="Status" asp-items="@status" class="form-control form-select px-2 ps-0 text-center border border-secondary">
+                                <option value="">---Chọn trạng thái--</option>
+                            </select>
+                            <span asp-validation-for="Status" id="StatusError" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <div class="py-2">Mô tả: </div>
+                            <textarea class="form-control" asp-for="Desc" rows="4" height="50px" placeholder="Vd: Công nghệ và kỹ thuật mới: Các phương pháp nuôi tôm mới, bao gồm công nghệ nuôi tôm siêu thâm canh..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        // Hàm kiểm tra validate
+    function validateForm(event) {
+        let isValid = true;
+
+        // Lấy giá trị của các trường
+        let name = document.getElementById('Name').value.trim();
+        let status = document.getElementById('Status').value;
+
+        // Kiểm tra trường 'Tên loại'
+        if (name === "") {
+            document.getElementById('NameError').innerText = "Thuộc tính là bắt buột.";
+            isValid = false;
+        } else {
+            document.getElementById('NameError').innerText = "";
+        }
+
+        // Kiểm tra trường 'Trạng thái'
+        if (status === "") {
+            document.getElementById('StatusError').innerText = "Thuộc tính là bắt buột.";
+            isValid = false;
+        } else {
+            document.getElementById('StatusError').innerText = "";
+        }
+
+        // Nếu không hợp lệ, ngừng submit form
+        if (!isValid) {
+            event.preventDefault();
+        }
+    }
+
+    // Lắng nghe sự kiện submit của form
+    document.getElementById('CreateCateNewsForm').addEventListener('submit', validateForm);
+    document.getElementById('Status').addEventListener('change', function() {
+        let status = this.value;
+        if (status !== "") {
+            // Nếu trạng thái đã được chọn, loại bỏ thông báo lỗi
+            document.getElementById('StatusError').innerText = "";
+        }
+    });
+</script>
+

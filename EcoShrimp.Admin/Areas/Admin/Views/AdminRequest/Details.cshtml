@@ -1,0 +1,103 @@
+﻿@using EcoShrimp.Share.Enums
+@model EcoShrimp.Data.Entities.AppRequests
+
+
+<div class="container-fluid p-0" style="font-size: 17px">
+	<div class="row w-100 ">
+		<div class="col pe-0  rounded-1 ps-4 ">
+			<div class="row w-75 ms-1 pt-1 " style="font-size: 18px">
+				<div class="col-auto p-0 pe-2 fw-bold  ps-2"><a asp-action="Index" class="text-decoration-none">Quản lý yêu cầu/</a></div>
+				<div class="col-auto p-0 ">Chi tiết yêu cầu</div>
+			</div>
+			<hr class="">
+			<div class="row ms-1 w-100">
+				<div class="col p-0 mb-2 me-5 " style="margin-left: 12px">
+					<div class="row fs-5">
+						<div class="col p-0 text-uppercase">
+							Thông tin yêu cầu:
+						</div>
+						<div class="col-auto p-0 d-flex justify-content-end">
+							<span>Ngày gửi yêu cầu: @Model.CreatedDate</span>
+						</div>
+					</div>
+
+					@if (Model.Status == RequestStatus.Resolved)
+					{
+						<span> <i class="far fa-check-circle text-success"></i> Đã phản hồi</span>
+					}
+					@if (Model.Status == RequestStatus.Rejected)
+					{
+						<span><i class="fas fa-exclamation-triangle text-danger"></i> Chưa phản hồi</span>
+					}
+					<div class="row g-2">
+						<div class="col-auto fw-bold pe-2 fs-6" style="padding-left: 20px">- Tên công ty/cá nhân: </div>
+						<div class="col-auto p-0"><i>@Model.CompanyName</i></div>
+					</div>
+					<div class="row g-2">
+						<div class="col-auto fw-bold pe-2 fs-6" style="padding-left: 20px">- Email: </div>
+						<div class="col-auto p-0"><i>@Model.Email</i></div>
+					</div>
+					<div class="row g-2">
+						<div class="col-auto fw-bold pe-2 fs-6" style="padding-left: 20px">- Nội dung hỗ trợ: </div>
+						<div class="col-auto p-0"><i>@Model.Content</i></div>
+					</div>
+					@if (Model.Status == RequestStatus.Pending)
+					{
+						<p class="row d-inline-flex gap-1 mt-4 mx-0">
+							<a class="btn btn-primary" data-toggle="collapse" href="#collapseRequest" role="button" aria-expanded="false" aria-controls="collapseRequest">
+								Gửi mail phản hồi ngay
+							</a>
+						</p>
+						<div class="row collapse mx-0" id="collapseRequest">
+							<div class="card card-body border border-none">
+								<div class="col p-0">
+									<form asp-action="Feedback" asp-route-id="@Model.Id" method="post">
+										<div class="row w-100 mx-auto">
+											<div class="col p-0">
+												<div class="row">
+													<div class="col-2 p-0 text-end pe-2 fw-bold">Tiêu đề: </div>
+													<div class="col p-0">
+														<input type="text" value="@Model.Id" name="IdRequest" class="form-control d-none" />
+														<input type="text" name="Subject" class="form-control" />
+													</div>
+												</div>
+												<div class="row mt-3">
+													<div class="col-2 text-end pe-2 p-0 fw-bold">Nội dung: </div>
+													<div class="col p-0">
+														<textarea id="contentFeedback" name="Body"></textarea>
+													</div>
+												</div>
+												<div class="row mt-3 d-flex justify-content-end">
+													<button class="btn btn-primary px-3" type="submit">Gửi phản hồi</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					}
+					@if (Model.Status == RequestStatus.Resolved)
+					{
+						<hr class="m-0 mt-3">
+						<div class="row p-2 fs-5 text-uppercase mt-4">Thông tin phản hồi</div>
+						<div class="row p-2">
+							<div class="col-auto p-0 fw-bold pe-2 fs-6">Subject: </div>
+							<div class="col-auto p-0">@Model.TitleFeedback</div>
+						</div>
+						<div class="row p-2">
+							<div class="col-auto p-0 fw-bold pe-2 fs-6 mb-2">Nội dung mail: </div>
+							<div class="col-auto p-0">
+								@Html.Raw(Model.ContentFeedback)
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-group mt-2">
+	<partial name="_BackToList" />
+</div>

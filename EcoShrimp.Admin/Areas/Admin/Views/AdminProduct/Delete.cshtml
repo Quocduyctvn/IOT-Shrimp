@@ -1,0 +1,91 @@
+﻿@model EcoShrimp.Data.Entities.AppProducts
+@{
+	var count = 1;
+
+}
+
+<div class="col-md-12" style="padding-bottom: 20px">
+	<div class="row w-100 mt-2">
+		<div class="col-auto p-0 ps-2 ">
+			<a asp-action="Index" class="text-decoration-none">Quản lý sản phẫm /</a>
+		</div>
+		<div class="col-auto p-0 ms-1">
+			<i>Xóa sản phẫm</i>
+		</div>
+	</div>
+	<div class="row w-100 fs-4 pt-2">
+		<span class="ps-2" style="font-size: 25px">Xác nhận xóa</span>
+	</div>
+	<hr />
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="row">
+		<div class="col-6 p-0 ps-4">
+			<div class="row fs-5">
+				Thông tin sản phẫm
+			</div>
+			<div class="row " style="font-size: 12px">
+				<span class="p-0"><i>Ngày tạo: @Model.CreatedDate?.ToString("dd/MM/yyyy") </i></span>
+			</div>
+			<div class="row mt-3">
+				<p class="p-0 mb-1 fw-bold">Tên sản phẫm</p>
+				<input type="text" value="@Model.Name" class="form-control" disabled />
+
+				<p class="p-0 mb-1 fw-bold">Mô tả</p>
+				<input type="text" value="@Model.Summary" class="form-control" disabled />
+			</div>
+			@if (Model.appProInstances.Count() > 0)
+			{
+				<div class="row mt-3 pe-5" style="margin-left: 2px">
+					<div class="p-0 mb-1 fs-5 fw-bold">Có @Model.appProInstances.Count Phiên bản sản phẫm bị ảnh hưởng: <span class="text-danger">*</span></div>
+					@foreach (var item in Model.appProInstances)
+					{
+						<div class="col-12 ">
+							<p class="p-0 mb-1 text-danger"><span class="fw-bold">@count .</span> @item.SeriNumber</p>
+						</div>
+						count++;
+					}
+				</div>
+			}
+			else
+			{
+				<div class="p-0 mt-4 fs-5 fw-bold">Không có sản phẫm nào bị ảnh hưởng - có thể xóa<span class="text-danger">*</span></div>
+			}
+
+			<div class="row mt-3">
+				@if (Model.appProInstances.Count() == 0)
+				{
+					<div class="form-group m-0 mt-1">
+						<form asp-action="DeleteConfirm" asp-controller="AdminCategories" method="post">
+							<input type="hidden" name="id" value="@Model.Id" />
+							<button type="submit" class="btn btn-danger">
+								<i class="fas fa-trash-alt fs-5"></i> &nbsp; Xác nhận xóa
+							</button>
+						</form>
+					</div>
+				}
+				else
+				{
+					<div class="form-group m-0 mt-1">
+						<button type="submit" class="btn btn-danger">
+							<i class="fas fa-trash-alt fs-5"></i> &nbsp; Không thể xóa
+						</button>
+					</div>
+				}
+				<div class="form-group mt-2">
+					<partial name="_BackToList" />
+				</div>
+			</div>
+		</div>
+		<div class="col-5 ms-auto p-0" style="margin-left: auto">
+			<div class="alert alert-info mt-0">
+				<span class=" fw-bold">Lưu ý sản phẫm xóa sản phẫm </span>
+				<ul>
+					<li>Chắc chắn rằng bạn đã sao lưu tất cả dữ liệu quan trọng.</li>
+					<li>Sản phẩm xóa sẽ không thể phục hồi sau khi xác nhận xóa.</li>
+					<li>Kiểm tra lại các sản phẩm đang được liên kết để tránh mất dữ liệu.</li>
+					<li>Việc xóa có thể ảnh hưởng đến các sản phẩm khác nếu có sự phụ thuộc.</li>
+					<li>Quá trình xóa sẽ hoàn tất sau khi bạn nhấn nút "Xác nhận xóa".</li>
+				</ul>
+			</div>
+		</div>
+	</div>

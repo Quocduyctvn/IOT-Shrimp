@@ -1,0 +1,76 @@
+﻿@model EcoShrimp.Admin.Areas.Admin.ViewModels.Products.QuantityVM
+@{
+	var status = TempData["status"] as List<SelectListItem>;
+}
+
+<div class="modal fade" id="AddQuantity" tabindex="-1" role="dialog" aria-labelledby="AddQuantityLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="width: 700px">
+			<form asp-action="UpdateQuantity" asp-controller="AdminProduct" id="AddQuantityForm" method="post">
+				<div class="modal-header">
+					<h4 class="modal-title fs-6" id="AddQuantityLabel">Thêm phiên bản cho sản phẫm</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="padding-top: 0px">
+					<div class="row">
+						<div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+							<span style="font-size: 12px;">Ngày cập nhật: @DateTime.Now.ToString("dd/MM/yy")</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<input asp-for="Id" id="ProductId" class="d-none"/>
+							<div class="py-2">Tên sản phẫm: <span style="color: red;">*</span></div>
+							<input type="text" id="ProductName" readonly class="form-control" placeholder="vd: Bộ cảm biến đa thông số 45R00" />
+						</div>
+						<div class="col-12">
+							<div class="py-2">Số lượng: </div>
+							<input  class="form-control" asp-for="Quantity" height="50px" />
+							<span id="QuantityError" class="text-danger"></span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+					<button type="submit" class="btn btn-primary">Thêm</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+		// Hàm kiểm tra validate
+		function fncAddQuantity(name, id) {
+			$('#ProductName').val(name);
+			$('#ProductId').val(id);
+		}
+
+	function validateForm(event) {
+		const quantityInput = document.getElementById('Quantity'); // ✅ Đúng ID
+		const quantityValue = quantityInput.value.trim();
+		const quantityError = document.getElementById('QuantityError');
+		let isValid = true;
+
+		if (quantityValue === "" || isNaN(quantityValue) || !Number.isInteger(Number(quantityValue)) || Number(quantityValue) <= 0) {
+			quantityError.innerText = "Số lượng phải là số nguyên dương.";
+			isValid = false;
+		} else {
+			quantityError.innerText = "";
+		}
+
+		// Nếu không hợp lệ, ngăn form submit
+		if (!isValid) {
+			event.preventDefault();
+		}
+	}
+
+	// Lắng nghe sự kiện submit của form
+	document.getElementById('AddQuantityForm').addEventListener('submit', validateForm);
+
+
+	// Lắng nghe sự kiện submit của form
+	document.getElementById('AddQuantityForm').addEventListener('submit', validateForm);
+</script>
+

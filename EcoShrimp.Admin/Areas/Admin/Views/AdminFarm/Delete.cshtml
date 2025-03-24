@@ -1,0 +1,110 @@
+﻿@model EcoShrimp.Data.Entities.AppFarms
+@{
+	var count = 1;
+
+}
+
+<div class="col-md-12" style="padding-bottom: 20px">
+	<div class="row w-100 mt-2">
+		<div class="col-auto p-0 ps-2 ">
+			<a asp-action="Index" class="text-decoration-none">Quản lý trang trại /</a>
+		</div>
+		<div class="col-auto p-0 ms-1">
+			<i>Xóa trang trại</i>
+		</div>
+	</div>
+	<div class="row w-100 fs-4 pt-2">
+		<span class="ps-2" style="font-size: 25px">Xác nhận xóa</span>
+	</div>
+	<hr />
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="row">
+		<div class="col-6 p-0 ps-4">
+			<div class="row fs-4">
+				Thông tin trang trại
+			</div>
+			<div class="row " style="font-size: 12px">
+				<span class="p-0"><i>Ngày tạo: @Model.CreatedDate?.ToString("dd/MM/yyyy") </i></span>
+			</div>
+			<div class="row mt-3">
+				<p class="p-0 mb-1 fw-bold">Tên trang trại</p>
+				<input type="text" value="@Model.FarmName" class="form-control" disabled />
+				<p class="p-0 mb-1 fw-bold">Tên chủ trang trại</p>
+				<input type="text" value="@Model.OwnerName" class="form-control" disabled />
+				<p>
+					Địa chỉ:
+					@if (!string.IsNullOrEmpty(Model.Ward) || !string.IsNullOrEmpty(Model.District))
+					{
+						<span>
+							@(string.IsNullOrEmpty(Model.Ward) ? "" : Model.Ward + " - ")
+							@(string.IsNullOrEmpty(Model.District) ? "" : Model.District + " - ")
+						</span>
+					}
+					@Model.City
+				</p>
+
+			</div>
+			@if (Model.appProInstances.Count() > 0)
+			{
+				<div class="row mt-1 pe-5" style="margin-left: 2px">
+					<div class="p-0 mb-1 fs-5 fw-bold">Có @Model.appProInstances.Count thiết bị - bị ảnh hưởng: <span class="text-danger">*</span></div>
+					@foreach (var item in Model.appProInstances)
+					{
+						<div class="col-12 ">
+							<p class="p-0 mb-1 text-danger"><span class="fw-bold">@count .</span> @item.SeriNumber</p>
+						</div>
+						count++;
+					}
+				</div>
+			}
+			else
+			{
+				<div class="p-0 mt-4 fs-5 fw-bold">Không có thiết bị nào bị ảnh hưởng - có thể xóa<span class="text-danger">*</span></div>
+			}
+
+			<div class="row mt-3">
+				@if (Model.appProInstances.Count() == 0)
+				{
+					<div class="form-group m-0 mt-1">
+						<form asp-action="DeleteConfirm" asp-controller="AdminFarm" method="post">
+							<input type="hidden" name="id" value="@Model.Id" />
+							<button type="submit" class="btn btn-danger">
+								<i class="fas fa-trash-alt fs-5"></i> &nbsp; Xác nhận xóa
+							</button>
+						</form>
+					</div>
+				}
+				else
+				{
+					<div class="form-group m-0 mt-1">
+						<button type="submit" class="btn btn-danger">
+							<i class="fas fa-trash-alt fs-5"></i> &nbsp; Không thể xóa
+						</button>
+					</div>
+				}
+				<div class="form-group mt-2">
+					<partial name="_BackToList" />
+				</div>
+			</div>
+		</div>
+		<div class="col-5 ms-auto p-0" style="margin-left: auto">
+			<div class="alert alert-info mt-0">
+				<span class=" fw-bold">Lưu ý xóa Trang trại</span>
+				<ul>
+					<li>
+						Dữ liệu không thể khôi phục: Sau khi xác nhận, tất cả thông tin về trang trại sẽ bị xóa vĩnh viễn.
+					</li>
+					<li>
+						Sao lưu trước khi xóa: Đảm bảo bạn đã lưu lại các dữ liệu quan trọng của khách hàng.
+					</li>
+					<li>
+						Kiểm tra các liên kết: Xác minh xem trang trại có liên kết với sản phẩm, đơn hàng hoặc dịch vụ nào khác không.
+					</li>
+					<li>
+						Ảnh hưởng đến hệ thống: Việc xóa trang trại có thể gây gián đoạn nếu có dữ liệu liên quan đang được sử dụng.
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

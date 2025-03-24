@@ -1,0 +1,266 @@
+﻿@using EcoShrimp.Data.Entities
+@model EcoShrimp.Admin.Areas.Admin.ViewModels.Products.ProductVM
+@{
+	ViewData["Title"] = "Thêm mới Sản phẫm";
+	var cates = TempData["Cate"] as List<AppCategories>;
+	var status = TempData["Status"] as List<SelectListItem>;
+}
+
+
+<div class="row w-100 mt-2">
+	<div class="col-auto p-0 ps-2 ">
+		<a asp-action="Index" class="text-decoration-none">Quản lý danh sách Sản phẫm / </a>
+	</div>
+	<div class="col-auto p-0 ms-1">
+		<i>Thêm mới Sản phẫm </i>
+	</div>
+</div>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+	<div class="row fs-4 pt-2 align-items-center">
+		<div class="col-auto">
+			<span class="ps-2" style="font-size: 25px">Thêm mới Sản phẫm </span>
+		</div>
+		<div class="col  d-flex justify-content-end">
+			<button type="submit" class="btn btn-primary js-btn-import" style="margin-left: 10px">
+				<i class="far fa-edit"></i>&nbsp; Cập nhật
+			</button>
+		</div>
+	</div>
+	<hr />
+
+	<div class="row">
+		<div class="col-sm-6 pe-3">
+			<div class="row g-3">
+				<div class="col-8 " style="padding-left: 0">
+					<label class="control-label">Tên sản phẫm:<span style="color: red;">*</span></label>
+					<input asp-for="Name" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="col-4 " style="padding-right: 0">
+					<label class="control-label">Danh mục:<span style="color: red;">*</span></label>
+					<div class="form-group m-0">
+						<select asp-for="IdCate"  class="form-control form-select text-center border border-secondary p-0" style="font-size: 15px; height: 33px;" required>
+							<option value="">--- Chọn danh mục ---</option>
+							@foreach (var item in cates)
+							{
+								if (item.Id == Model.IdCate)
+								{
+									<option value="@item.Id" selected>@item.Name</option>
+								}
+								else
+								{
+									<option value="@item.Id">@item.Name</option>
+								}
+							}
+						</select>
+						<span asp-validation-for="IdCate" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			@* Hình ảnh  *@
+			<div class="row" style="margin-top: 15px">
+				<div class="col-12 p-0 border border-1">
+					<div class="row">
+						<div class="col">
+							<div class="form-group">
+								<div class=" rounded-0 form-control text-start" style="background-color: #D2D2D2"><span>Hình ảnh (tối đa 10 - tối thiểu 1)<span style="color: red;">*</span></span></div>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="margin-left: 10px;margin-bottom: 20px">
+						<div class="col p-0 ms-2">
+							<div class="row w-100 position-relative">
+								<div class="col p-0 mt-2 mx-3" style="opacity: 1;">
+									<div class="row text-center justify-content-center align-items-center"
+										 style="border: dotted 2px rgb(139, 139, 139); height: 150px; position: relative;">
+										<i class="fas fa-cloud-upload-alt" style="font-size: 50px; color: rgb(10, 176, 202)"></i>
+										<img class="img-preview position-absolute"
+											 style="display: none; width: 100%; height: 100%; object-fit: cover;" />
+										<i class="fas fa-times-circle remove-image position-absolute"
+										   style="top: -15px; right: -15px; color: red; cursor: pointer; display: none; font-size: 25px"></i>
+									</div>
+								</div>
+								<div class="col-12 p-0 mt-2 mx-3 position-absolute" style="opacity: 0;">
+									<input data-preview="0" id="fileInput" class="file-input" asp-for="FormFile" type="file"
+										   style="height: 150px; width: 100%; " accept="image/*" multiple />
+								</div>
+							</div>
+							<span class="fs-6 text-success position-relative" asp-validation-for="FormFile" style="left: -10px;" id="labelImgPost"></span>
+						</div>
+					</div>
+					<span asp-validation-for="FormFile" class="text-danger"></span>
+				</div>
+			</div>
+
+
+		</div>
+		<div class="col-sm-6 " style="padding:0 0 0 40px;">
+			<div class="form-group m-0 pb-2" style="border-bottom: 2px solid #a55d0799;">
+				<div class="row g-3">
+					<div class="col-6">
+						<label class="control-label">Giá gốc:<span style="color: red;">*</span></label>
+						<input asp-for="OriginalPrice" class="form-control" type="number" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="OriginalPrice" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Giá bán:<span style="color: red;">*</span></label>
+						<input asp-for="SalePrice" class="form-control" type="number" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="SalePrice" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group m-0 pb-1 mt-2" style="border-bottom: 2px solid #a55d0799 ">
+				<div class="row g-3">
+					<div class="col-6">
+						<label class="control-label">Số lượng:<span style="color: red;">*</span></label>
+						<input asp-for="Quantity" class="form-control" readonly type="number" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Quantity" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Trạng thái:<span style="color: red;">*</span></label>
+						<div class="form-group m-0">
+							<select asp-for="Status"  class="form-control form-select text-center border border-secondary p-0" style="font-size: 15px; height: 33px;" required>
+								<option value="">--- Chọn trạng thái ---</option>
+								@foreach (var item in status)
+								{
+									if (item.Value == Model.Status)
+									{
+										<option value="@item.Value" selected>@item.Text</option>
+									}
+									else
+									{
+										<option value="@item.Value">@item.Text</option>
+									}
+								}
+							</select>
+						</div>
+						<span asp-validation-for="Status" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group m-0 pb-2 mt-2">
+				<div class="row g-3">
+					<div class="col">
+						<label class="control-label">Mô tả ngắn:</label>
+						<textarea asp-for="Summary" class="form-control" rows="4" style="border-radius: 0px;"></textarea>
+						<span asp-validation-for="Summary" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 p-0">
+			<div class="image-preview-container form-group" id="images">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 p-0">
+			<div class=" form-group">
+				@if (Model.FileString != null && Model.FileString.Any())
+				{
+					foreach (var imagePath in Model.FileString)
+					{
+						<div class="image-item" style="display: inline-block; margin: 5px;">
+							<img src="@imagePath" alt="Product Image" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;" />
+						</div>
+					}
+				}
+				else
+				{
+					<p>Không có ảnh nào.</p>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 mt-1 p-0">
+			<div class="form-group">
+				<label class="control-label">Nội dung:</label>
+				<textarea id="AddDescproduct" asp-for="Desc" class="form-control" rows="4" style="border-radius: 0px;"></textarea>
+				<span asp-validation-for="Desc" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" style="margin-top: 20px">
+		<div class="form-group">
+			<partial name="_BackToList" />
+		</div>
+	</div>
+</form>
+
+<style>
+	.image-preview-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px; /* Khoảng cách giữa các ảnh */
+		margin-top: 10px;
+		display: none;
+	}
+
+		.image-preview-container .image-box {
+			position: relative;
+			width: 100px;
+			height: 100px;
+		}
+
+		.image-preview-container img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 5px;
+		}
+
+		.image-preview-container .remove-btn {
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			color: red;
+			cursor: pointer;
+			font-size: 18px;
+		}
+</style>
+
+<script>
+		document.getElementById("fileInput").addEventListener("change", function (event) {
+		let files = event.target.files;
+		let previewContainer = document.getElementById("images");
+		previewContainer.innerHTML = ""; // Xóa ảnh cũ
+		previewContainer.style.display = "flex";
+
+		if (files.length === 0) {
+			previewContainer.innerHTML = "<p style='color:red;'>Vui lòng chọn ít nhất 1 ảnh.</p>";
+			return;
+		} else if (files.length > 10) {
+			previewContainer.innerHTML = "<p style='color:red;'>Chỉ được chọn tối đa 10 ảnh.</p>";
+			event.target.value = ""; // Xóa lựa chọn sai
+			return;
+		}
+
+		Array.from(files).forEach((file) => {
+			let reader = new FileReader();
+			reader.onload = function (e) {
+				let imgContainer = document.createElement("div");
+				imgContainer.className = "image-box";
+
+				let img = document.createElement("img");
+				img.src = e.target.result;
+
+				let removeBtn = document.createElement("i");
+				removeBtn.className = "fas fa-times-circle remove-btn";
+				removeBtn.onclick = function () {
+					imgContainer.remove();
+				};
+
+				imgContainer.appendChild(img);
+				imgContainer.appendChild(removeBtn);
+				previewContainer.appendChild(imgContainer);
+			};
+			reader.readAsDataURL(file);
+		});
+	});
+
+</script>

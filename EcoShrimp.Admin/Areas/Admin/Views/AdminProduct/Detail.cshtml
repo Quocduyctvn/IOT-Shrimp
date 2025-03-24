@@ -1,0 +1,120 @@
+﻿@using EcoShrimp.Admin.Areas.Admin.ViewModels.Products
+@using EcoShrimp.Share.Enums
+@model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppProInstances>
+
+@{
+	int stt = 1;
+}
+<div class="row w-100 fs-4 ">
+	<span class="ps-2" style="font-size: 25px">Phiên bản sản phẫm</span>
+</div>
+<hr />
+
+<div class="row">
+	<div class="col-12">
+		<div class="row">
+			<h4 class="mx-1" style=" font-weight: bold">@Model.FirstOrDefault().appProducts.Name</h4>
+		</div>
+	</div>
+</div>
+
+
+<div class="table-responsive mt-3">
+<div class="table-responsive mt-3">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th style="width: 50px ">#</th>
+				<th>Số seri Raspberry pi</th>
+				<th style="width: 20px " class="text-center">Port</th>
+				<th style="width: 150px " class="text-center">IP</th>
+				<th style="width: 210px " class="text-center">Trạng thái</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td style="vertical-align: middle;">@stt</td>
+					<td style="position: relative; vertical-align: middle; padding-right: 10px;">
+						<span>@item.SeriNumber</span>
+
+						@if (item.Status == Status.Bought)
+						{
+							<span style="position: absolute;top: 7px; left: -10px;font-size: 10px; background-color: #e58484; padding: 2px; font-size: 11px;  border-radius: 4px;  color: white; transform: rotate(-30deg);  display: inline-block;">
+								Đã bán
+							</span>
+						}
+					</td>
+
+					<td style="vertical-align: middle;" class="text-center">
+						<span class="mx-1">@item.Port</span>
+					</td>
+					<td style="vertical-align: middle;" class="text-center">
+						@if (item.IP == null)
+						{
+							<span class="mx-1 text-danger"><i class="fas fa-exclamation"></i> </span>
+						}
+						else
+						{
+							<span class="mx-1 text-success">@item.IP</span>
+						}
+					</td>
+
+					<td style="vertical-align: middle;" class="text-center">
+						@if (item.IP == null)
+						{
+							<span class="mx-1 text-danger">Chưa khởi chạy Rasp pi</span>
+						}
+						else
+						{
+							<span class="mx-1 text-success">Đang hoạt động</span>
+						}
+					</td>
+
+					<td class="justify-content-center text-center " style="width: 80px; vertical-align: middle;">
+						@if (item.Status == Status.Bought)
+						{
+							<button type="button" disabled class=" px-2 btn btn-outline-light border border-sacondary ">
+									<i class="fas fa-trash-alt fs-5 text-danger"></i>
+							</button>
+						}
+						else
+						{
+							<button type="button" class=" px-2 btn btn-outline-light border border-sacondary " onclick="confirmDelete('@item.Id')">
+								<i class="fas fa-trash-alt fs-5 text-danger"></i>
+							</button>
+						}
+					</td>
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+	@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+	{
+		<div class="text-center">
+			<span class="text-danger"><i>Kết quả tìm kiếm [@Model.Count()] item </i></span> <a asp-action="Index" class="text-decoration-none text-center" style="display: inline-block">Đặt lại</a>
+		</div>
+	}
+</div>
+
+<partial name="_Pager" />
+
+<div class="row" style="margin-top: 20px">
+	<div class="form-group">
+		<partial name="_BackToList" />
+	</div>
+</div>
+
+@await Html.PartialAsync("_AddQuantity", new QuantityVM())
+
+@await Html.PartialAsync("_DeleteProInstan")
+<script>
+	function confirmDelete(id) {
+		const deleteUrl = `/Admin/AdminProduct/DeleteInstance/${id}`;
+		document.getElementById("confirmDeleteBtn").href = deleteUrl;
+		$('#confirmDeleteModal').modal('show');
+	}
+</script>

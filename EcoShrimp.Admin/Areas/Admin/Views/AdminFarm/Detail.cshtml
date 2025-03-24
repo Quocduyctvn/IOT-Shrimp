@@ -1,0 +1,179 @@
+﻿@using EcoShrimp.Admin.Areas.Admin.ViewModels.Products
+@using EcoShrimp.Data.Entities
+@using EcoShrimp.Share.Enums
+@model EcoShrimp.Data.Entities.AppFarms
+
+@{
+	int stt = 1;
+	var groupedProInstances = TempData["ProInstances"] as List<IGrouping<string, AppProInstances>>;
+}
+
+
+<div class="row">
+	<div class="col-12 d-flex flex-column align-items-center text-center">
+		<div class="row">
+			<h4 class="mx-1">Trang trại: @Model.FarmName</h4>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				Khách hàng: @Model.OwnerName - @Model.Phone
+			</div>
+			<div class="col-12">
+				Địa chỉ:
+				@{
+					var addressParts = new List<string>();
+
+					if (!string.IsNullOrWhiteSpace(Model.NumberHouse)) addressParts.Add(Model.NumberHouse);
+					if (!string.IsNullOrWhiteSpace(Model.Ward)) addressParts.Add(Model.Ward);
+					if (!string.IsNullOrWhiteSpace(Model.District)) addressParts.Add(Model.District);
+					if (!string.IsNullOrWhiteSpace(Model.City)) addressParts.Add(Model.City);
+				}
+
+				@if (addressParts.Any())
+				{
+					<span>@string.Join(" - ", addressParts)</span>
+				}
+			</div>
+			<div class="col-12">
+				<i>Ngày đăng ký hệ thống: @Model.CreatedDate?.ToString("dd-MM-yyyy")</i>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="table-responsive mt-3">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th style="width: 50px ">#</th>
+				<th>Số seri Raspberry pi</th>
+				<th style="width: 120px " class="text-center">Ngày SD</th>
+				<th style="width: 210px " class="text-center">Trạng thái</th>
+				<th>Thu hồi</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.appProInstances)
+			{
+				<tr>
+					<td style="vertical-align: middle;">@stt</td>
+					<td style="position: relative; vertical-align: middle; padding-right: 10px;">
+						<span>@item.SeriNumber [@item.appProducts.appCategory.Name - @item.appProducts.Code]</span>
+
+						@if (item.Status == Status.Bought)
+						{
+							<span style="position: absolute;top: 7px; left: -10px;font-size: 10px; background-color: #e58484; padding: 2px; font-size: 11px;  border-radius: 4px;  color: white; transform: rotate(-30deg);  display: inline-block;">
+								Đã bán
+							</span>
+						}
+					</td>
+
+					<td style="vertical-align: middle;" class="text-center">
+						<span class="mx-1">@item.BuyDate?.ToString("dd-MM-yyyy")</span>
+					</td>
+
+					<td style="vertical-align: middle;" class="text-center">
+						@if (item.IP == null)
+						{
+							<span class="mx-1 text-danger">Chưa khởi chạy Rasp pi</span>
+						}
+						else
+						{
+							<span class="mx-1 text-success">Đang hoạt động</span>
+						}
+					</td>
+
+					<td class="justify-content-center text-center " style="width: 80px; vertical-align: middle;">
+						<button type="button" class=" px-2 btn btn-outline-light border border-sacondary " onclick="confirmUndo('@item.Id')">
+							<i class="fas fa-undo" style="color:#348de3"></i>
+						</button>
+					</td>
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+	@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+	{
+		<div class="text-center">
+			<span class="text-danger"><i>Kết quả tìm kiếm [@Model.appProInstances.Count()] item </i></span> <a asp-action="Index" class="text-decoration-none text-center" style="display: inline-block">Đặt lại</a>
+		</div>
+	}
+</div>
+
+<div class="row d-flex flex-column align-items-center text-center">
+	<div class="col-12">
+		<div style="cursor: pointer; color: #348de3" data-toggle="collapse" data-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
+			<i class="fas fa-plus"></i> Thêm Thiết bị cho trang trại
+		</div>
+	</div>
+	<div class=" col-12 collapse" id="collapseProducts">
+		<div class="card card-body">
+
+			<table class="table table-hover">
+				<tbody>
+					@if (groupedProInstances != null)
+					{
+
+						@foreach (var group in groupedProInstances)
+						{
+							<tr class="table-primary">
+								<td colspan="5" class="text-start font-weight-bold">@group.Key</td>
+							</tr>
+
+							@foreach (var item in group)
+							{
+								<tr>
+									<td style="vertical-align: middle;">@stt</td>
+									<td style="position: relative; vertical-align: middle; padding-right: 10px;">
+										<span>@item.Name</span>
+									</td>
+									<td style="position: relative; vertical-align: middle; padding-right: 10px;">
+										<span>@item.SeriNumber</span>
+									</td>
+									<td style="vertical-align: middle;" class="text-center">
+										@if (item.IP == null)
+										{
+											<span class="mx-1 text-danger">Chưa khởi chạy Rasp pi</span>
+										}
+										else
+										{
+											<span class="mx-1 text-success">Đang hoạt động</span>
+										}
+									</td>
+									<td class="justify-content-center text-center" style="width: 80px; vertical-align: middle; ">
+										<button type="button" class="px-2 btn btn-outline-light border border-0">
+											<a asp-action="AddProInstan" asp-controller="AdminFarm" asp-route-proInstanId="@item.Id" asp-route-farmId="@Model.Id" style="color: forestgreen">
+												<i class="fas fa-plus"></i>
+											</a>
+										</button>
+									</td>
+								</tr>
+								stt++;
+							}
+						}
+					}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>
+@* <partial name="_Pager" /> *@
+
+<div class="row" style="margin-top: 20px">
+	<div class="form-group">
+		<partial name="_BackToList" />
+	</div>
+</div>
+
+@await Html.PartialAsync("_Undo")
+<script>
+	function confirmUndo(id) {
+		const Urls = `/Admin/AdminFarm/ConfirmUndo/${id}`;
+		document.getElementById("confirmUndoBtn").href = Urls;
+		$('#confirmUndoModal').modal('show');
+	}
+</script> 

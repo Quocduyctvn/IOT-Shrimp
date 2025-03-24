@@ -1,0 +1,115 @@
+﻿@model EcoShrimp.Admin.Areas.Admin.ViewModels.Categories.CateVM
+@{
+    var status = TempData["status"] as List<SelectListItem>;
+    var selected = "";
+}
+
+<div class="modal fade" id="UpdateCate" tabindex="-1" role="dialog" aria-labelledby="UpdateCateLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 700px">
+            <form asp-action="Update" asp-controller="AdminCategories" id="UpdateCateForm" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title fs-6" id="UpdateCateLabel">Cập nhật loại sản phẩm</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding-top: 0px">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-end" style="margin-top: 7px">
+                            <span style="font-size: 12px;">Ngày tạo: @DateTime.Now.ToString("dd/MM/yy")</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <input asp-for="Id" id="UdId" class="d-none" />
+                            <div class="py-2">Tên loại: <span style="color: red;">*</span></div>
+                            <input type="text" asp-for="Name" id="UdName" class="form-control" placeholder="vd: Bộ cảm biến đa thông số 45R00" />
+                            <span id="UdNameError" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <div class="py-2">Trạng thái hoạt động: <span style="color: red;">*</span></div>
+                            <select asp-for="Status" id="UdStatus" class="form-control form-select px-2 ps-0 text-center border border-secondary">
+                                <option value="">---Chọn trạng thái--</option>
+                                <option value="Active">Hoạt động</option>
+                                <option value="Inactive">Ngưng hoạt động</option>
+                            </select>
+                            <span id="UdStatusError" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <div class="py-2">Mô tả: </div>
+                            <textarea class="form-control" id="UdDesc" asp-for="Desc" rows="4" height="50px"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function fncUpdateCate(name, desc, status, id) {
+        $('#UdName').val(name);
+        $('#UdDesc').val(desc);
+        $('#UdId').val(id);
+        var statusDropdown = document.getElementById('UdStatus');
+        for (var i = 0; i < statusDropdown.options.length; i++) {
+            if (statusDropdown.options[i].value === status) {
+                statusDropdown.selectedIndex = i;  // Chọn trạng thái từ dropdown
+                break;
+            }
+        }
+    }
+
+    // Hàm kiểm tra validate
+    document.getElementById('UpdateCateForm').addEventListener('submit', function(event) {
+        let isValid = true;
+		console.log('submit');
+        // Kiểm tra trường Name
+        let name = document.getElementById('UdName').value;
+        let status = document.getElementById('UdStatus').value;
+
+        // Kiểm tra trường Name và Status
+        if (!name) {
+            document.getElementById('UdNameError').innerHTML = "Tên loại không được để trống!";
+
+        console.log('submit1');
+            isValid = false;
+        } else {
+            document.getElementById('UdNameError').innerHTML = "";
+        }
+
+        if (!status) {
+            document.getElementById('UdStatusError').innerHTML = "Trạng thái không được để trống!";
+
+        console.log('submit2');
+            isValid = false;
+        } else {
+            document.getElementById('UdStatusError').innerHTML = "";
+        }
+
+        // Nếu trường Name rỗng và không chọn trạng thái, hiển thị lỗi
+        if (!name && !status) {
+            document.getElementById('UdNameError').innerHTML = "Tên loại không được để trống!";
+            document.getElementById('UdStatusError').innerHTML = "Trạng thái không được để trống!";
+            isValid = false;
+        }
+
+        // Nếu form không hợp lệ, ngừng submit
+        if (!isValid) {
+            event.preventDefault(); // Ngừng form submit
+        }
+    });
+
+    // Hàm để xóa lỗi khi chọn trạng thái
+    document.getElementById('UdStatus').addEventListener('change', function() {
+        let status = this.value;
+        if (status !== "") {
+            document.getElementById('StatusError').innerText = "";  // Loại bỏ lỗi khi chọn trạng thái
+        }
+    });
+</script>

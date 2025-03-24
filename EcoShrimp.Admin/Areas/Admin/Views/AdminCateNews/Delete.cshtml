@@ -1,0 +1,88 @@
+﻿@model EcoShrimp.Data.Entities.AppCateNews
+
+@{
+	var count = 1;
+
+}
+
+<div class="col-md-12" style="padding-bottom: 20px">
+	<div class="row w-100 mt-2">
+		<div class="col-auto p-0 ps-2 ">
+			<a asp-action="Index" class="text-decoration-none">Quản lý loại tin tức /</a>
+		</div>
+		<div class="col-auto p-0 ms-1">
+			<i>Xóa danh mục</i>
+		</div>
+	</div>
+	<div class="row w-100 fs-4 pt-2">
+		<span class="ps-2" style="font-size: 25px">Xác nhận xóa</span>
+	</div>
+	<hr />
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="row">
+		<div class="col-6 p-0 ps-4">
+			<div class="row fs-5">
+				Thông tin loại tin tức
+			</div>
+			<div class="row " style="font-size: 12px">
+				<span class="p-0"><i>Ngày tạo: @Model.CreatedDate?.ToString("dd/MM/yyyy") </i></span>
+			</div>
+			<div class="row mt-3">
+				<p class="p-0 mb-1 fw-bold">Tên loại tin tức</p>
+				<input type="text" value="@Model.Name" class="form-control" disabled />
+
+				<p class="p-0 mb-1 fw-bold mt-2">Mô tả:  @Model.Desc"</p>
+			</div>
+			@if (Model.appNews.Count() > 0)
+			{
+				<div class="row mt-3 pe-5" style="margin-left: 2px">
+					<div class="p-0 mb-4 fs-5 fw-bold">Có @Model.appNews.Count bài viết bị ảnh hưởng <span class="text-danger">*</span></div>
+					@foreach (var item in Model.appNews)
+					{
+						<p class="p-0 mb-1 text-danger"><span class="fw-bold">@count .</span> @item.Title</p>
+						count++;
+					}
+				</div>
+			}
+			else
+			{
+				<div class="p-0 mt-4 fs-5 fw-bold">Không có bài viết nào bị ảnh hưởng - có thể xóa<span class="text-danger">*</span></div>
+			}
+
+			<div class="row mt-3">
+				@if (Model.appNews.Count() == 0)
+				{
+					<div class="form-group m-0 mt-1">
+						<form asp-action="DeleteConfirm" asp-controller="AdminCateNews" method="post">
+							<input type="hidden" name="id" value="@Model.Id" />
+							<button type="submit" class="btn btn-danger">
+								<i class="fas fa-trash-alt fs-5"></i> &nbsp; Xác nhận xóa
+							</button>
+						</form>
+					</div>
+				}
+				else
+				{
+					<div class="form-group m-0 mt-1">
+						<button type="submit" class="btn btn-danger">
+							<i class="fas fa-trash-alt fs-5"></i> &nbsp; Không thể xóa
+						</button>
+					</div>
+				}
+				<div class="form-group mt-3">
+					<partial name="_BackToList" />
+				</div>
+			</div>
+		</div>
+		<div class="col-5 ms-auto p-0" style="margin-left: auto">
+			<div class="alert alert-info mt-0">
+				<span class=" fw-bold">Lưu ý xóa loại tin tức</span>
+				<ul>
+					<li>Đảm bảo bạn đã xác nhận chính xác loại tin tức cần xóa để tránh mất dữ liệu quan trọng.</li>
+					<li>Kiểm tra các mối liên kết và phụ thuộc của loại tin tức trong hệ thống (ví dụ: bài viết, tài liệu, bình luận có thể liên kết với loại tin tức này).</li>
+					<li>Cân nhắc sao lưu dữ liệu trước khi thực hiện xóa, để tránh việc mất dữ liệu không thể khôi phục.</li>
+					<li>Đảm bảo quyền truy cập của người dùng: Chỉ những người có quyền xóa mới có thể thực hiện hành động này.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
