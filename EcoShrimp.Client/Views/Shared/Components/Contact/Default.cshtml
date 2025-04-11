@@ -1,11 +1,14 @@
-﻿@model EcoShrimp.Client.ViewModels.Request.RequestVM
-
+﻿@using EcoShrimp.Data.Entities
+@model EcoShrimp.Client.ViewModels.Request.RequestVM
+@{
+	var shrimp = TempData["shrimp"] as AppShrimp;
+}
 
 <section class="contact-style1-area pt-4">
 	<div class="contact-form-box1_bg" style="background-image: url(assets-template/images/resources/contact-form-box1_bg.png);"></div>
 	<div class="thm-round-box1">
 		<h5>
-			Cùng <br> Shrimp.com<br> trao đối những thắc mắc của bạn!!
+			Cùng <br> @shrimp.WebsiteName<br> trao đối những thắc mắc của bạn!!
 		</h5>
 	</div>
 	<div class="gray-bg"></div>
@@ -18,7 +21,7 @@
 					</div>
 					<div class="sec-title">
 						<div class="sub-title">
-							<h5>Shrimp.com</h5>
+							<h5>@shrimp.WebsiteName</h5>
 						</div>
 						<h2 style="font-size: 18px">
 							Rất vui được hỗ trợ bạn
@@ -35,7 +38,7 @@
 							</div>
 							<div class="title">
 								<h3>Liên hệ nhanh </h3>
-								<h2><a href="tel:+50033333">+84 901 007 221 </a></h2>
+								<h2><a href="tel:+50033333">@shrimp.Phone</a></h2>
 							</div>
 						</div>
 						<div class="text">
@@ -51,7 +54,7 @@
 			<div class="col-xl-6" id="contact-section">
 				<div class="contact-form-box1">
 					<div class="top-title">
-						<h2>Liên hệ với Shrimp.com </h2>
+						<h2>Liên hệ với @shrimp.WebsiteName</h2>
 					</div>
 					<form class="default-form1" asp-Action="Contact" asp-controller="Home" method="post">
 						<div class="input-box">
@@ -83,6 +86,19 @@
 					</form>
 
 				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="google-map-area pt-1 pb-0">
+	<div class="container pt-5 ">
+		<div class="row">
+			<div class="col-xl-12">
+					@if (shrimp.Map != null)
+					{
+						@Html.Raw(shrimp.Map)
+					}
 			</div>
 		</div>
 	</div>

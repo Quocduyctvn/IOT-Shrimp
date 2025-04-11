@@ -179,7 +179,10 @@ namespace EcoShrimp.Data.Migrations
                     b.Property<double?>("Sal")
                         .HasColumnType("double");
 
-                    b.Property<double>("Temp")
+                    b.Property<double?>("Tds")
+                        .HasColumnType("double");
+
+                    b.Property<double?>("Temp")
                         .HasColumnType("double");
 
                     b.Property<double?>("Tur")
@@ -242,6 +245,9 @@ namespace EcoShrimp.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
+
+                    b.Property<int?>("IdTime")
+                        .HasColumnType("int");
 
                     b.Property<string>("Location")
                         .HasMaxLength(512)
@@ -377,6 +383,405 @@ namespace EcoShrimp.Data.Migrations
                     b.HasIndex("IdCateNew");
 
                     b.ToTable("app_news", (string)null);
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppPermissions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Table")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("app_permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 8102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm người dùng",
+                            GroupName = "Quản lý người dùng",
+                            Table = "AppUsers"
+                        },
+                        new
+                        {
+                            Id = 8101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách người dùng",
+                            GroupName = "Quản lý người dùng",
+                            Table = "AppUsers"
+                        },
+                        new
+                        {
+                            Id = 8103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật người dùng",
+                            GroupName = "Quản lý người dùng",
+                            Table = "AppUsers"
+                        },
+                        new
+                        {
+                            Id = 8104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa người dùng",
+                            GroupName = "Quản lý người dùng",
+                            Table = "AppUsers"
+                        },
+                        new
+                        {
+                            Id = 1102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm danh mục",
+                            GroupName = "Quản lý danh mục",
+                            Table = "AppCategories"
+                        },
+                        new
+                        {
+                            Id = 1101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách danh mục",
+                            GroupName = "Quản lý danh mục",
+                            Table = "AppCategories"
+                        },
+                        new
+                        {
+                            Id = 1103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật danh mục",
+                            GroupName = "Quản lý danh mục",
+                            Table = "AppCategories"
+                        },
+                        new
+                        {
+                            Id = 1104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa danh mục",
+                            GroupName = "Quản lý danh mục",
+                            Table = "AppCategories"
+                        },
+                        new
+                        {
+                            Id = 1105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết danh mục",
+                            GroupName = "Quản lý danh mục",
+                            Table = "AppCategories"
+                        },
+                        new
+                        {
+                            Id = 2102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm danh mục tin tức",
+                            GroupName = "Quản lý danh mục tin tức",
+                            Table = "AppCateNews"
+                        },
+                        new
+                        {
+                            Id = 2101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách danh mục tin tức",
+                            GroupName = "Quản lý danh mục tin tức",
+                            Table = "AppCateNews"
+                        },
+                        new
+                        {
+                            Id = 2103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật danh mục tin tức",
+                            GroupName = "Quản lý danh mục tin tức",
+                            Table = "AppCateNews"
+                        },
+                        new
+                        {
+                            Id = 2104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa danh mục tin tức",
+                            GroupName = "Quản lý danh mục tin tức",
+                            Table = "AppCateNews"
+                        },
+                        new
+                        {
+                            Id = 2105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết danh mục tin tức",
+                            GroupName = "Quản lý danh mục tin tức",
+                            Table = "AppCateNews"
+                        },
+                        new
+                        {
+                            Id = 3102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm trang trại",
+                            GroupName = "Quản lý trang trại",
+                            Table = "AppFarms"
+                        },
+                        new
+                        {
+                            Id = 3101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách trang trại",
+                            GroupName = "Quản lý trang trại",
+                            Table = "AppFarms"
+                        },
+                        new
+                        {
+                            Id = 3103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật trang trại",
+                            GroupName = "Quản lý trang trại",
+                            Table = "AppFarms"
+                        },
+                        new
+                        {
+                            Id = 3104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa trang trại",
+                            GroupName = "Quản lý trang trại",
+                            Table = "AppFarms"
+                        },
+                        new
+                        {
+                            Id = 3105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết trang trại",
+                            GroupName = "Quản lý trang trại",
+                            Table = "AppFarms"
+                        },
+                        new
+                        {
+                            Id = 4102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm tin tức",
+                            GroupName = "Quản lý tin tức",
+                            Table = "AppNews"
+                        },
+                        new
+                        {
+                            Id = 4101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách tin tức",
+                            GroupName = "Quản lý tin tức",
+                            Table = "AppNews"
+                        },
+                        new
+                        {
+                            Id = 4103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật tin tức",
+                            GroupName = "Quản lý tin tức",
+                            Table = "AppNews"
+                        },
+                        new
+                        {
+                            Id = 4104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa tin tức",
+                            GroupName = "Quản lý tin tức",
+                            Table = "AppNews"
+                        },
+                        new
+                        {
+                            Id = 4105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết tin tức",
+                            GroupName = "Quản lý tin tức",
+                            Table = "AppNews"
+                        },
+                        new
+                        {
+                            Id = 5102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm sản phẩm",
+                            GroupName = "Quản lý sản phẩm",
+                            Table = "AppProducts"
+                        },
+                        new
+                        {
+                            Id = 5101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách sản phẩm",
+                            GroupName = "Quản lý sản phẩm",
+                            Table = "AppProducts"
+                        },
+                        new
+                        {
+                            Id = 5103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật sản phẩm",
+                            GroupName = "Quản lý sản phẩm",
+                            Table = "AppProducts"
+                        },
+                        new
+                        {
+                            Id = 5104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa sản phẩm",
+                            GroupName = "Quản lý sản phẩm",
+                            Table = "AppProducts"
+                        },
+                        new
+                        {
+                            Id = 5105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết sản phẩm",
+                            GroupName = "Quản lý sản phẩm",
+                            Table = "AppProducts"
+                        },
+                        new
+                        {
+                            Id = 6102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm yêu cầu",
+                            GroupName = "Quản lý yêu cầu",
+                            Table = "AppRequests"
+                        },
+                        new
+                        {
+                            Id = 6101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách yêu cầu",
+                            GroupName = "Quản lý yêu cầu",
+                            Table = "AppRequests"
+                        },
+                        new
+                        {
+                            Id = 6103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật yêu cầu",
+                            GroupName = "Quản lý yêu cầu",
+                            Table = "AppRequests"
+                        },
+                        new
+                        {
+                            Id = 6104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa yêu cầu",
+                            GroupName = "Quản lý yêu cầu",
+                            Table = "AppRequests"
+                        },
+                        new
+                        {
+                            Id = 6105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết yêu cầu",
+                            GroupName = "Quản lý yêu cầu",
+                            Table = "AppRequests"
+                        },
+                        new
+                        {
+                            Id = 7102,
+                            Code = "CREATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Thêm vai trò",
+                            GroupName = "Quản lý vai trò",
+                            Table = "AppRoles"
+                        },
+                        new
+                        {
+                            Id = 7101,
+                            Code = "VIEW_LIST",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem danh sách vai trò",
+                            GroupName = "Quản lý vai trò",
+                            Table = "AppRoles"
+                        },
+                        new
+                        {
+                            Id = 7103,
+                            Code = "UPDATE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Cập nhật vai trò",
+                            GroupName = "Quản lý vai trò",
+                            Table = "AppRoles"
+                        },
+                        new
+                        {
+                            Id = 7104,
+                            Code = "DELETE",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xóa vai trò",
+                            GroupName = "Quản lý vai trò",
+                            Table = "AppRoles"
+                        },
+                        new
+                        {
+                            Id = 7105,
+                            Code = "VIEW_DETAIL",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Xem chi tiết vai trò",
+                            GroupName = "Quản lý vai trò",
+                            Table = "AppRoles"
+                        });
                 });
 
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppPonds", b =>
@@ -632,6 +1037,90 @@ namespace EcoShrimp.Data.Migrations
                     b.ToTable("app_requests", (string)null);
                 });
 
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppRolePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("IdPermission")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdRole")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdPermission");
+
+                    b.HasIndex("IdRole");
+
+                    b.ToTable("app_role_per", (string)null);
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppRoles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<int?>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("app_roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Desc = "Quản trị toàn bộ hệ thống",
+                            Name = "Quản trị hệ thống"
+                        });
+                });
+
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppSeasons", b =>
                 {
                     b.Property<int>("Id")
@@ -685,6 +1174,250 @@ namespace EcoShrimp.Data.Migrations
                     b.HasIndex("IdPond");
 
                     b.ToTable("app_seasons", (string)null);
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppShrimp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("FacebookUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("InstagramUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Logan")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("LogoUrl")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<string>("Map")
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<string>("OpentTime")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("SubPhone")
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("TwitterUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("WebsiteName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("YouTubeUrl")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("app_shrimp", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Hẻm 388, P An Khánh, Q Ninh Kiều, TPCT",
+                            Email = "quocduyctvn@gmail.com",
+                            FacebookUrl = "https://facebook.com/ecoshrimp",
+                            InstagramUrl = "https://instagram.com/ecoshrimp",
+                            Logan = "EcoShrimp, Công nghệ IoT – Đồng hành cùng người nuôi tôm trong kỷ nguyên số!",
+                            LogoUrl = "/assets/images/logo/logo-EcoShrimp-text.png",
+                            Map = "",
+                            OpentTime = "T2 - T7: 7h30 đến 16h00",
+                            Phone = "090 100 7221",
+                            SubPhone = "034 888 6431",
+                            TwitterUrl = "https://twitter.com/ecoshrimp",
+                            WebsiteName = "EcoShrimp.com",
+                            YouTubeUrl = "https://youtube.com/ecoshrimp"
+                        });
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppTimeIntervals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("app_time_intervel", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Label = "1 Phút",
+                            Value = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Label = "5 Phút",
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Label = "10 Phút",
+                            Value = 10
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Label = "30 Phút",
+                            Value = 30
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Label = "1 Tiếng",
+                            Value = 60
+                        });
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppUsers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(256)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Avatar")
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<int>("IdRole")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Pass")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<int?>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdRole");
+
+                    b.ToTable("app_users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "132, Hưng Lợi, Ninh Kiều, Cần Thơ",
+                            CreatedDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "quocduyctvn@gmail.com",
+                            IdRole = 1,
+                            Name = "Quốc Duy",
+                            Pass = "$2a$10$qQz9tM5bpeZBa62L8b5bdOYHt4TWDvBHMZ46BNe1JR/hA.LSKTttW",
+                            Phone = "0901007221",
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppConnects", b =>
@@ -778,6 +1511,25 @@ namespace EcoShrimp.Data.Migrations
                     b.Navigation("appCategory");
                 });
 
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppRolePermission", b =>
+                {
+                    b.HasOne("EcoShrimp.Data.Entities.AppPermissions", "appPermission")
+                        .WithMany("appRolePermissions")
+                        .HasForeignKey("IdPermission")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EcoShrimp.Data.Entities.AppRoles", "appRole")
+                        .WithMany("appRolePermissions")
+                        .HasForeignKey("IdRole")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("appPermission");
+
+                    b.Navigation("appRole");
+                });
+
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppSeasons", b =>
                 {
                     b.HasOne("EcoShrimp.Data.Entities.AppPonds", "appPond")
@@ -787,6 +1539,17 @@ namespace EcoShrimp.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("appPond");
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppUsers", b =>
+                {
+                    b.HasOne("EcoShrimp.Data.Entities.AppRoles", "appRole")
+                        .WithMany("appUsers")
+                        .HasForeignKey("IdRole")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("appRole");
                 });
 
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppCateNews", b =>
@@ -811,6 +1574,11 @@ namespace EcoShrimp.Data.Migrations
                     b.Navigation("appProInstances");
                 });
 
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppPermissions", b =>
+                {
+                    b.Navigation("appRolePermissions");
+                });
+
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppPonds", b =>
                 {
                     b.Navigation("appSeasons");
@@ -826,6 +1594,13 @@ namespace EcoShrimp.Data.Migrations
                     b.Navigation("appImges");
 
                     b.Navigation("appProInstances");
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppRoles", b =>
+                {
+                    b.Navigation("appRolePermissions");
+
+                    b.Navigation("appUsers");
                 });
 
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppSeasons", b =>

@@ -10,8 +10,8 @@
             <div class="modal-body">
                 <form asp-action="Connect" asp-controller="ClientHome">
                     <div class="mb-3">
-                        <input type="text" asp-for="SeasonId" class="form-control" id="modalDeviceId" readonly>
-                        <input type="text" asp-for="DeviceId" class="form-control" id="modalDeviceSeasonId" readonly>
+                        <input type="hidden" asp-for="DeviceId" class="form-control" id="modalDeviceId" readonly>
+                        <input type="hidden" asp-for="SeasonId" class="form-control" id="modalDeviceSeasonId" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="modalDeviceName" class="form-label">Tên Thiết bị</label>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModalDevice()">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Thêm</button>
+                        <button type="submit" class="btn btn-primary">Kết nối</button>
                     </div>
                 </form>
             </div>

@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>d6536d45-1902-403e-a5dd-72440c4555f4</UserSecretsId>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -23,6 +24,10 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <Content Update="Areas\Client\Views\ClientHome\_UpdateSeason.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="Areas\Client\Views\ClientHome\_CreateSeason.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -34,6 +39,7 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <Folder Include="wwwroot\images\logo\" />
     <Folder Include="wwwroot\images\news\" />
   </ItemGroup>
 

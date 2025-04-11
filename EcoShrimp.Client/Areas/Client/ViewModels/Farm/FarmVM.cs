@@ -14,6 +14,7 @@ namespace EcoShrimp.Client.Areas.Client.ViewModels.Farm
 		public string? Ward { get; set; }
 		public string? District { get; set; }
 		public string? City { get; set; }
+		public int? IdTime { get; set; }
 		public string? Location { get; set; }
 		[Required(ErrorMessage = "Thuộc tính là bắt buột")]
 		[RegularExpression(RegexConst.PHONE_NUMBER, ErrorMessage = "Số điện thoại không hợp lệ!")]

@@ -29,6 +29,7 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 										.Include(x => x.appPonds)
 										.ThenInclude(x => x.appSeasons)
 										.ThenInclude(x => x.appConnects)
+										.ThenInclude(x => x.appProInstances)
 										.FirstOrDefault(x => x.Id == IdFarm);
 			farm.appProInstances = farm.appProInstances ?? new List<AppProInstances>();
 			return View(farm);
@@ -109,6 +110,7 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 					HttpResponseMessage response = await client.GetAsync(url);
 					return response.IsSuccessStatusCode;
 				}
+
 				catch (TaskCanceledException ex)
 				{
 					Console.WriteLine($"⏳ Timeout: {url} - {ex.Message}");
@@ -144,6 +146,7 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			{
 				connect.Status = ConnectStatus.Connected;
 				connect.StartDate = DateTime.Now;
+				connect.EndDate = null;
 				_DbContext.Update(connect);
 			}
 			else
@@ -159,6 +162,26 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			SetSuccessMesg("Kết nối thành công!!");
 			return RedirectToAction("Index");
 		}
+
+		[HttpPost]
+		public IActionResult CancelConect(int id)
+		{
+			var connect = _DbContext.AppConnects.Where(x => x.Id == id && x.Status == ConnectStatus.Connected).FirstOrDefault();
+			// nếu đã kết nôi trước đó rồi 
+			if (connect == null)
+			{
+				SetErrorMesg("Đã xảy ra lỗi trong quá trình xử lí!!");
+				return RedirectToAction("Index");
+			}
+
+			connect.Status = ConnectStatus.NotConnected;
+			connect.EndDate = DateTime.Now;
+			_DbContext.Update(connect);
+			_DbContext.SaveChanges();
+			SetSuccessMesg("Hủy kết nối thành công!!");
+			return RedirectToAction("Index");
+		}
+
 
 		[HttpGet]
 		public async Task<IActionResult> Detail(int id)
@@ -181,6 +204,10 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 				return RedirectToAction("Index");
 			}
 
+			connect.UpdatedDate = DateTime.Now;
+			_DbContext.Update(connect);
+			_DbContext.SaveChanges();
+
 			string url = $"http://{connect.appProInstances.IP}:{connect.appProInstances.Port}";
 			bool isOnline = await IsWebsiteAvailable(url);
 			ViewBag.IsOnline = isOnline;
@@ -188,13 +215,18 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			ClaimsIdentity identity = (ClaimsIdentity)User.Identity!;
 			var IdClaim = identity.FindFirst("ID")?.Value;
 			int IdFarm = int.Parse(IdClaim);
+			var farm = _DbContext.AppFarms.Include(x => x.appProInstances).FirstOrDefault(x => x.Id == IdFarm);
+
 			ViewData["farm"] = _DbContext.AppFarms.Include(x => x.appProInstances)
-											.ThenInclude(x => x.appProducts)
-											.ThenInclude(x => x.appCategory)
+										.ThenInclude(x => x.appProducts)
+										.ThenInclude(x => x.appCategory)
 										.Include(x => x.appPonds)
 										.ThenInclude(x => x.appSeasons)
 										.ThenInclude(x => x.appConnects)
 										.FirstOrDefault(x => x.Id == IdFarm);
+			ViewData["selectedTime"] = _DbContext.AppTimeIntervals.Where(x => x.Id == farm.IdTime).FirstOrDefault();
+
+			//TempData["ValueTime"] = _DbContext.AppTimeIntervals.FirstOrDefault(x => x.Id == connect.appProInstances.IdTime);
 
 			return View(connect);
 		}
@@ -203,17 +235,18 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 		{
 			try
 			{
-				DateTime startDate = dateSelected?.Date ?? DateTime.Today;
+				TimeZoneInfo vnTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+				DateTime todayVN = TimeZoneInfo.ConvertTime(DateTime.UtcNow, vnTimeZone).Date;
+
+				DateTime startDate = dateSelected?.Date ?? todayVN;
 				DateTime endDate;
 
-				if (dateSelected?.Date == DateTime.Today)
+				if (dateSelected?.Date == todayVN)
 				{
-					// Nếu chọn ngày hiện tại -> Lấy giờ phút của DateTime.Now
 					endDate = dateSelected.Value.Date.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute);
 				}
 				else
 				{
-					// Nếu chọn ngày khác -> Đặt giờ phút về cuối ngày (23:59:59)
 					endDate = dateSelected?.Date.AddHours(23).AddMinutes(59).AddSeconds(59) ?? DateTime.Now;
 				}
 
@@ -230,9 +263,15 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 						x.DO,
 						x.Nh4,
 						x.Sal,
-						x.Tur
+						x.Tur,
+						x.Tds
 					})
 					.ToListAsync();
+
+				var connect = _DbContext.AppConnects.FirstOrDefault(x => x.Id == idConnect);
+				connect.UpdatedDate = DateTime.Now;
+				_DbContext.Update(connect);
+				_DbContext.SaveChanges();
 
 				return Json(sensorData);
 			}
@@ -241,9 +280,5 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 				return Json(new { error = "Lỗi khi lấy dữ liệu: " + ex.Message });
 			}
 		}
-
-
-
-
 	}
 }

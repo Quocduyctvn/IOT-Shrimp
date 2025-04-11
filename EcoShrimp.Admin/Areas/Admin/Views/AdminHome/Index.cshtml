@@ -1,8 +1,14 @@
-﻿@{
+﻿@model EcoShrimp.Data.Entities.AppShrimp
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">
+        <img src="@Model.LogoUrl" height="300px"/>
+    </h1>
+    <h4 style="text-transform: uppercase;">
+        Hệ thống giám sát môi trường ao tôm - Đồng hành cùng người nuôi tôm trong kỷ nguyên số!
+    </h4>
+
 </div>

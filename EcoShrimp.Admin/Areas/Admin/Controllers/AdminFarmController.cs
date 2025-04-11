@@ -67,6 +67,7 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 			farm.NumberHouse = model.NumberHouse != null ? model.NumberHouse : "";
 			farm.Desc = model.Desc != null ? model.Desc : "";
 			farm.Status = Status.Active;
+			farm.IdTime = 1;
 			farm.SortOrder = maxSort + 1;
 			farm.CreatedDate = DateTime.Now;
 			if (model.FormFile != null)

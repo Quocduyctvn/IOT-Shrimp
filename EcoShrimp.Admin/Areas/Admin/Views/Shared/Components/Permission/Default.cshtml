@@ -1,0 +1,29 @@
+﻿@model List<IGrouping<string, EcoShrimp.Data.Entities.AppPermissions>>
+
+<div class="container-fluid">
+    <div class="row w-100 js-masonry">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-6 col-md-4 col-xl-3 js-group-permission">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">@item.Key</h5>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var per in item)
+                        {
+                            <div class="form-group hover:text-primary">
+                                <div class="custom-control custom-switch  form-check form-switch  mb-3">
+                                    <input id="permission-@per.Id" type="checkbox" data-id="@per.Id"
+                                           class="custom-control-input check-permission form-check-input" />
+                                    <label for="permission-@per.Id"
+                                           class="custom-control-label form-check-label w-100 hover:pointer">@per.Desc <small>(@per.Id)</small></label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

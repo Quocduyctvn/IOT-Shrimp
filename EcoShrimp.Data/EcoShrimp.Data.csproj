@@ -26,8 +26,4 @@
     <ProjectReference Include="..\EcoShrimp.Share\EcoShrimp.Share.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataSeeders\" />
-  </ItemGroup>
-
 </Project>

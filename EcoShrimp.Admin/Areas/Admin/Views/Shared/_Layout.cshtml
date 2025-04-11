@@ -44,9 +44,8 @@
 
 			</section>
 		</div>
-		<footer class="main-footer">
-			Phần Mềm Quản trị Khách Sạn - Giải pháp quản lý khách sạn toàn diện
-		</footer>
+
+		@await Component.InvokeAsync("Footer")
 
 	</div>
 	@RenderSection("print", false)

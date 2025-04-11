@@ -1,26 +1,30 @@
-﻿@model EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar.NavBarViewModel
+﻿@using EcoShrimp.Data.Entities
+@model EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar.NavBarViewModel
 
 @{
-    var currentControllerName = Context.Request.RouteValues["controller"].ToString();
-    string href = "";
-    string menuOpenClass = "";	
-    string activeClass = "";
-    bool itemIsOpened;
+	var currentControllerName = Context.Request.RouteValues["controller"].ToString();
+	string href = "";
+	string menuOpenClass = "";	
+	string activeClass = "";
+	bool itemIsOpened;
+	var shrimp = TempData["shrimp"] as AppShrimp;
 }
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-	<div class="brand-text font-weight-light d-block text-center justify-content-center mt-3">
-		@* @if (string.IsNullOrEmpty(Hotel.Avatar)) *@
-		@* { *@
-		@* 	<img src="~/images/manager/hotel-logo.png" class="rounded-circle" width="80px" height="80px" /> *@
-		@* } *@
-		@* else *@
-		@* { *@
-		@* 	<img src="@Hotel.Avatar" class="rounded-circle" width="100px" height="100px" /> *@
-		@* } *@
-	</div>
-	@* <a href="/Admin" class="brand-link"> *@
-	@* 	<span class="brand-text font-weight-light d-block text-center">@Hotel.Name</span> *@
-	@* </a> *@
+	<a href="/Admin" class="brand-link  mt-4" style="text-decoration: none">
+		<div class="brand-text font-weight-light d-block text-center justify-content-center mb-2">
+			@if (string.IsNullOrEmpty(shrimp.LogoUrl))
+			{
+
+				<img src="/images/logo/logon-cirle.png" class="rounded-circle" width="80px" height="80px" />
+			}
+			else
+			{
+				<img src="@shrimp.LogoUrl" class="rounded-circle" width="auto" height="90px" />
+			}
+		</div>
+		<span class="brand-text font-weight-light d-block text-center">@shrimp.WebsiteName</span>
+	</a>
+
 
 	<div class="sidebar">
 		<nav class="mt-2">

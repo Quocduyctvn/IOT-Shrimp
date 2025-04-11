@@ -23,6 +23,13 @@
 	.pointer:hover {
 	cursor: pointer;
 	}
+
+	/* //----------------------------------------------- */
+	.rotate {
+	transition: transform 0.5s ease-in-out;
+	transform: rotate(180deg);
+	}
+
 </style>
 <style>
 	/* The toggle switch container */
@@ -84,18 +91,18 @@
 	}
 
 	.breadcrumb-area-bg {
-		background-image: url(/assets-template/images/slides/slide-v1-1.jpg);
-		background-repeat: no-repeat;
-		background-size: 100% auto; /* Đảm bảo ảnh luôn phủ chiều rộng mà không vỡ */
-		background-position: center top;
-		height: 250px;
-		border-radius: 10px 10px 5px 5px;
+	background-image: url(/assets-template/images/slides/slide-v1-1.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% auto; /* Đảm bảo ảnh luôn phủ chiều rộng mà không vỡ */
+	background-position: center top;
+	height: 210px;
+	border-radius: 10px 10px 5px 5px;
 	}
 
 </style>
 <section class="breadcrumb-area pb-0">
 	<div class="breadcrumb-area-bg" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-		<div class="container text-center" style="position: absolute; top: 100px; z-index: 20" >
+		<div class="container text-center text-light" style="position: absolute; top: 60px; z-index: 20">
 			<h4 class="mx-1">Trang trại: @Model.FarmName</h4>
 			<div>Khách hàng: @Model.OwnerName - @Model.Phone</div>
 			<div>
@@ -113,25 +120,24 @@
 					<span>@string.Join(" - ", addressParts)</span>
 				}
 			</div>
-			<div><i>Ngày đăng ký hệ thống: @Model.CreatedDate?.ToString("dd-MM-yyyy")</i></div>
-
 		</div>
 
 		<!-- Đặt ảnh bên dưới chữ -->
-		<div style="position: absolute; top: -20px; right: -60px">
-			<img src="~/assets/images/shrimp/may-khongnen.png" data-aos="fade-up" data-aos-delay="100" width="400px" />
+		<div style="position: absolute; top: -20px; right: -40px">
+			<img src="~/assets/images/shrimp/may-khongnen.png" data-aos="fade-up" data-aos-delay="100" width="360px" />
 		</div>
 	</div>
 
 
-	<div style="position: absolute; left: 35px; top: 150px">
+	<div style="position: absolute; left: 35px; top: 120px">
 		<img src="~/assets/images/shrimp/shrimp1-khongnen.png" data-aos="zoom-in" data-aos-delay="700" width="300px" />
 	</div>
 
-	<div style="position: absolute; right: 50px; top: 140px">
+	<div style="position: absolute; right: 50px; top: 110px">
 		<img src="~/assets/images/shrimp/shrimp2-khongnen.png" data-aos="flip-right" data-aos-delay="700" width="250px" />
 	</div>
 </section>
+
 
 <div class="col p-0 mt-2">
 	<div class="sub-title pb-0">
@@ -143,8 +149,20 @@
 		<img src="assets-template/images/shape/decor.png" class="m-0 p-0" alt="">
 	</div>
 </div>
-
-
+@if (Model.appPonds.Where(x => x.Status == Status.Active).Count() <= 0)
+{
+	<div class="col p-0 mt-2">
+		<div class="text-center">
+			<span class="text-primary">
+				<i>
+					<a asp-action="Index" asp-controller="ClientPond" class="text-decoration-none text-center">
+						Chưa khởi tạo Vuông/Ao nuôi - Thiết lặp ngay!!!
+					</a>
+				</i>
+			</span>
+		</div>
+	</div>
+}
 <div class="accordion mt-3" id="accordionExample" style="margin-bottom: 70px">
 	@foreach (var item in Model.appPonds.Where(x => x.Status == Status.Active))
 	{
@@ -155,12 +173,16 @@
 					@item.Name
 					@if (item.appSeasons.Any(x => x.Status == Status.Active))
 					{
-						<span> - [Vụ mùa: @item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.Name]</span>
+						<span class="text-success"> - [Đang hoạt động]</span>
+					}
+					else
+					{
+						<span style="color: #488bcc"> - [Đang tạm ngưng]</span>
 					}
 				</button>
 			</h2>
 			<div id="@temp" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-				<div class="accordion-body mt-1" style="padding: 30px 0;  display: flex; flex-direction: column; align-items: center; justify-content: center;">
+				<div class="accordion-body mt-1" style="padding: 0 0 30px 0;  display: flex; flex-direction: column; align-items: center; justify-content: center;">
 					@{
 						// lấy mùa vụ đang hoạt động
 						var season = item.appSeasons.FirstOrDefault(x => x.Status == Status.Active);
@@ -168,29 +190,49 @@
 					@if (season != null)
 					{
 						<div class="row w-100 px-3 mt-0 d-flex justify-content-center">
+							<div class="col-12 " style="padding:10px 0">
+								<p class="mb-1" style="cursor: pointer">
+									<span onclick="UpdateSeason('@season.Id', '@season.Name', '@season.Density', '@season.StartDate', '@season.EndDate', '@season.Desc')">
+										Đợt nuôi: <i>@season?.Name</i>
+										<i class="fas fa-info-circle text-primary"></i>
+									</span>
+								</p>
+
+								<p class="mb-1">
+									Thời gian:
+									<i>
+										@item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.CreatedDate?.ToString("dd/MM/yyyy") ->
+										Dự kiến:
+										@(
+																	@item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.EndDate != null ?
+																	@item.appSeasons.FirstOrDefault(x => x.Status == Status.Active)?.EndDate?.ToString("dd/MM/yyyy")
+																	: "null"
+																	)
+									</i>
+									<i class="text-primary" style="cursor: pointer" onclick="EndSeason('@season.Id', '@season.Name')">[Kết thúc đợt nuôi]</i>
+								</p>
+							</div>
 							@foreach (var connect_item in season.appConnects.Where(x => x.Status == ConnectStatus.Connected).ToList())
 							{
 								<div class="col-xl-3 col-md-6">
-									<a asp-action="Detail" asp-controller="ClientHome" asp-route-id="@connect_item.Id" class="text-decoration-none">
-										<div class="card text-white mb-4" style="background-color:#6ad1d1">
-											<div class="row w-100 ms-4 mt-3  text-light">
-												<div class="col-7 p-0">
-													<div class="row ">
-														<span class="fw-bold p-0">@connect_item.appProInstances.Name</span>
-													</div>
-												</div>
-												<div class="col-3 p-0 ms-auto mt-2">
-													<i class="fas fa-align-right fs-5"></i>
-												</div>
+									<div class="card text-white mb-4 pt-4">
+										<div class="row mt-1 ms-1 text-light" style="background-image: url(/assets/images/Shrimp/sensor01.png);  height: 150px; width: 100%;  background-size: contain;  background-repeat: no-repeat; background-position: center;">
+										</div>
+										<div class="row w-100 mt-1 ms-1 text-primary">
+											<div class="col p-0 px-3 text-center" style="cursor: pointer"
+												 onclick="InforConect('@connect_item.Id', '@season.Name', '@connect_item.appProInstances.Name', '@connect_item.StartDate.ToString("yyyy-MM-dd HH:mm:ss")')">
+												<span class="fw-bold p-0">@connect_item.appProInstances.Name</span>
+												<i class="fas fa-info-circle text-secondary"></i>
 											</div>
+										</div>
+										<a asp-action="Detail" asp-controller="ClientHome" asp-route-id="@connect_item.Id" class="text-decoration-none">
 											<div class="row w-100 ms-0 mt-3 justify-content-center  text-light py-2" style="background-color: #95dddd">
 												<div class="col-auto p-0 mx-auto">Xêm thêm <i class="fas fa-arrow-circle-right"></i></div>
 											</div>
-										</div>
-									</a>
+										</a>
+									</div>
 								</div>
 							}
-
 						</div>
 
 						<div class="row" style="width: 100%">
@@ -212,12 +254,11 @@
 						<!-- Hiển thị kết quả -->
 						<div class="result-container row" style="width: 100%">
 						</div>
-
 					}
 					@if (!item.appSeasons.Any(x => x.Status == Status.Active))
 					{
-						<span onclick="CreateSeason(@item.Id)" class="pointer text-primary">
-							Thêm vụ mùa cho Vuông để bắt đầu theo dõi thông số môi trường ngay!!
+						<span onclick="CreateSeason(@item.Id)" class="pointer text-primary mt-4">
+							Thêm đợt nuôi cho Vuông để bắt đầu theo dõi thông số môi trường ngay!!
 						</span>
 					}
 				</div>
@@ -226,8 +267,32 @@
 	}
 </div>
 
-
 <script>
+	function CreateSeason() {
+		let icon = document.getElementById("seasonIcon");
+		let options = document.getElementById("seasonOptions");
+
+		console.log(icon, options); // Kiểm tra xem các phần tử có tồn tại không
+		alert("clicked");
+
+		if (!icon || !options) {
+			console.error("Không tìm thấy phần tử seasonIcon hoặc seasonOptions!");
+			return;
+		}
+
+		// Thêm class xoay tròn cho icon
+		icon.classList.add("rotate");
+
+		// Hiển thị hoặc ẩn danh sách tùy chọn
+		options.classList.toggle("d-none");
+
+		// Dừng xoay sau 0.5s
+		setTimeout(() => {
+			icon.classList.remove("rotate");
+		}, 500);
+	}
+
+
 	function openModal(id, name, seasonid) {
 		document.getElementById('modalDeviceId').value = id;
 		document.getElementById('modalDeviceName').value = name;
@@ -253,7 +318,7 @@
 				loadingIndicator.style.display = 'block';
 
 				try {
-					let response = await fetch(`https://localhost:44335/client/ClientHome/GetDevice/${seasonId}`);
+					let response = await fetch(`https://localhost:44304/client/ClientHome/GetDevice/${seasonId}`);
 					if (!response.ok) throw new Error('Lỗi lấy dữ liệu');
 
 					let devices = await response.json();
@@ -265,7 +330,7 @@
 									  : "fa-times-circle text-danger");
 
 						let descText = device.desc === "Not-Config" ? "Chưa được cấu hình"
-									  : (device.desc === "Connect" ? "Có thể sử dụng" : "Không kết nối wifi");
+									  : (device.desc === "Connect" ? "Đang kết nối Wifi" : "Không kết nối wifi");
 
 						// Tạo HTML cho phần tử
 						html += `<li style="padding:15px 10px;margin: 10px 0; background-color: #e5ede6; border-radius: 4px; display: flex; justify-content: space-between; cursor: ${device.desc === "Connect" ? "pointer" : "default"};"
@@ -314,7 +379,9 @@
 </script>
 
 
-@await Html.PartialAsync("_CreateSeason", new SeasonVM())
 @await Html.PartialAsync("_Connect", new ConnectVM())
 
-						
+@await Html.PartialAsync("_CreateSeason", new SeasonVM())
+@await Html.PartialAsync("_UpdateSeason", new SeasonVM())
+@await Html.PartialAsync("_EndSeason")
+@await Html.PartialAsync("_InforConect")

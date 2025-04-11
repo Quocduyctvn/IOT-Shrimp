@@ -2,6 +2,7 @@
 using EcoShrimp.Client.Areas.Client.Controllers.Base;
 using EcoShrimp.Client.Areas.Client.ViewModels.Device;
 using EcoShrimp.Client.Areas.Client.ViewModels.Farm;
+using EcoShrimp.Client.Areas.Client.ViewModels.Time;
 using EcoShrimp.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -27,6 +28,7 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 				return RedirectToAction("Index");
 			}
 			var farmVM = new FarmVM();
+			farmVM.Id = farm.Id;
 			farmVM.OwnerName = farm.OwnerName;
 			farmVM.FarmName = farm.FarmName;
 			farmVM.Phone = farm.Phone;
@@ -37,8 +39,10 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			farmVM.NumberHouse = farm.NumberHouse;
 			farmVM.Desc = farm.Desc;
 			farmVM.Avatar = farm.Avatar;
+			farmVM.IdTime = farm.IdTime;
 
 			TempData["proInstans"] = _DbContext.AppProInstances.Where(x => x.IdFarm == farm.Id).ToList();
+			TempData["times"] = _DbContext.AppTimeIntervals.ToList();
 			return View(farmVM);
 		}
 
@@ -138,6 +142,33 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			}
 
 			return relativePath; // Trả về đường dẫn tương đối
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UpdateIdTime([FromBody] UpdateTimeVM dto)
+		{
+			try
+			{
+				if (dto == null || dto.IdFarm <= 0)
+				{
+					return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+				}
+
+				var appFarm = await _DbContext.AppFarms.FindAsync(dto.IdFarm);
+				if (appFarm == null)
+				{
+					return NotFound(new { message = "AppFarm không tồn tại!" });
+				}
+
+				appFarm.IdTime = dto.IdTime;
+				await _DbContext.SaveChangesAsync();
+
+				return Ok(new { message = "Cập nhật thành công!" });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, new { message = "Lỗi server!", error = ex.Message });
+			}
 		}
 
 	}

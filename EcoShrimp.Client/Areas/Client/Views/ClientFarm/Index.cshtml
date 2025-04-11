@@ -4,6 +4,7 @@
 @{
 	int stt = 1;
 	var proInstans = TempData["proInstans"] as List<AppProInstances>;
+	var times = TempData["times"] as List<AppTimeIntervals>;
 }
 
 <form asp-action="Index" method="post" enctype="multipart/form-data">
@@ -138,21 +139,48 @@
 	</div>
 </form>
 
-
-
-<div class="mt-5" style="border-top: 2px solid #a55d0799;">
+<div class="mt-3">
 	<div class="row fs-4 pt-2 align-items-center">
-		<div class="col-auto">
-			<span class="" style="font-size: 25px">Thông tin thiết bị</span>
+		<div class="col-md-3 p-0 mb-1 pt-1" style="border-top: 2px solid #a55d0799;">
+			<span class="" style="font-size: 19px">Thiết lặp khoảng cách điểm biểu đồ</span>
 		</div>
 	</div>
-	<hr class="mt-1"/>
 
-	<div class="row" >
+	<div class="row">
+		<div class="col p-0">
+			<div class="col-md-3 p-0 d-flex flex-column">
+				<select id="filter-month" class="form-control" data-farm-id="@Model.Id" onchange="updateTimeFarm(this)">
+					@foreach (var item in times)
+					{
+						if (Model.IdTime == item.Id)
+						{
+							<option value="@item.Id" selected data-value="@item.Value">@item.Label</option>
+						}
+						else
+						{
+							<option value="@item.Id" data-value="@item.Value">@item.Label</option>
+						}
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="mt-3" style="border-top: 2px solid #a55d0799;">
+	<div class="row fs-4 pt-2 align-items-center">
+		<div class="col-auto">
+			<span class="" style="font-size: 20px">Thông tin thiết bị</span>
+		</div>
+	</div>
+	<hr class="mt-1" />
+
+	<div class="row">
 		<div class="col pe-3">
 			@foreach (var item in proInstans)
 			{
-				<form asp-action="UpdateDevice" method="post" enctype="multipart/form-data" >
+				<form asp-action="UpdateDevice" method="post" enctype="multipart/form-data">
 					<div class="row g-3 align-items-center mb-3">
 						<div class="col-auto">
 							@stt .
@@ -162,7 +190,7 @@
 
 							<!-- Chế độ hiển thị tên -->
 							<span class="name-text">@item.Name</span>
-							 
+
 							<!-- Chế độ chỉnh sửa -->
 							<input asp-for="@item.Name" value="@item.Name" name="Name" class="form-control name-input d-none" style="border-radius: 0px; height: 32px;" />
 
@@ -219,6 +247,31 @@
 </style>
 
 <script>
+	function updateTimeFarm(selectElement) {
+		var selectedId = selectElement.value;
+		 var farmId = selectElement.getAttribute("data-farm-id");
+
+		var requestData = { IdFarm: farmId, IdTime: selectedId };
+
+		console.log("Dữ liệu gửi lên:", requestData); // ✅ Kiểm tra dữ liệu trước khi gửi
+
+		$.ajax({
+			url: "/ClientFarm/UpdateIdTime",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(requestData),
+			success: function(response) {
+				console.log("Cập nhật thành công:", response);
+				window.location.reload();
+			},
+			error: function(error) {
+				console.error("Lỗi khi cập nhật!", error);
+			}
+		});
+	}
+</script>
+<script>
+
 	function togglePassword() {
 		var passwordInput = document.getElementById("passwordInput");
 		var eyeIcon = document.getElementById("eyeIcon");
@@ -249,10 +302,7 @@
 		});
 	});
 
-</script>
 
-
-<script>
 	document.addEventListener("DOMContentLoaded", function () {
 		// Load danh sách Tỉnh/Thành phố
 		fetch("https://api.mysupership.vn/v1/partner/areas/province")

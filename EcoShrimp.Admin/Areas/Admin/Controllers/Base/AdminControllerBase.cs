@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using EcoShrimp.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace EcoShrimp.Admin.Areas.Admin.Controllers.Base
 {
+	[Authorize(Roles = "Admin")]
 	public class AdminControllerBase : Controller
 	{
 		protected readonly ApplicationDbContext _DbContext;  // khai báo protected quy định không cho phép truy cập ngoài lớp - trừ kế thừa 

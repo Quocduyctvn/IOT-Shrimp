@@ -20,6 +20,12 @@ namespace EcoShrimp.Data
 		public DbSet<AppRequests> AppRequests { get; set; }
 		public DbSet<AppCateNews> AppCateNews { get; set; }
 		public DbSet<AppNews> AppNews { get; set; }
+		public DbSet<AppTimeIntervals> AppTimeIntervals { get; set; }
+		public DbSet<AppUsers> AppUsers { get; set; }
+		public DbSet<AppRoles> AppRoles { get; set; }
+		public DbSet<AppRolePermission> AppRolePermission { get; set; }
+		public DbSet<AppPermissions> AppPermissions { get; set; }
+		public DbSet<AppShrimp> AppShrimps { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)  // Fluent API
 		{

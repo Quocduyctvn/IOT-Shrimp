@@ -68,7 +68,7 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 			string adminRootPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "EcoShrimp.Admin", "wwwroot");
 			string clientRootPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "EcoShrimp.Client", "wwwroot");
 
-			var maxSortOrder = _DbContext.AppCateNews
+			var maxSortOrder = _DbContext.AppNews
 												.DefaultIfEmpty()
 												.Max(x => x == null ? 0 : x.SortOrder);
 			var news = new AppNews();
@@ -208,5 +208,49 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 
 			return relativePath; // Trả về đường dẫn tương đối
 		}
+
+
+		public IActionResult Plus(int id)
+		{
+			var news = _DbContext.AppNews.OrderBy(x => x.SortOrder).ToList();
+
+			var currentItem = news.FirstOrDefault(x => x.Id == id);
+
+			int currentIndex = news.IndexOf(currentItem);
+			if (currentIndex == news.Count - 1)
+			{
+				// Nếu là phần tử cuối cùng, giữ nguyên
+				return RedirectToAction("Index");
+			}
+
+			var nextItem = news[currentIndex + 1];
+
+			(currentItem.SortOrder, nextItem.SortOrder) = (nextItem.SortOrder, currentItem.SortOrder);
+
+			_DbContext.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
+		public IActionResult Subtr(int id)
+		{
+			var news = _DbContext.AppNews.OrderBy(x => x.SortOrder).ToList();
+
+			var currentItem = news.FirstOrDefault(x => x.Id == id);
+			int currentIndex = news.IndexOf(currentItem);
+
+			if (currentIndex == 0)
+			{
+				// Giữ nguyên nếu là phần tử đầu tiên
+				return RedirectToAction("Index");
+			}
+
+			var previousItem = news[currentIndex - 1];
+
+			(currentItem.SortOrder, previousItem.SortOrder) = (previousItem.SortOrder, currentItem.SortOrder);
+
+			_DbContext.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
 	}
 }

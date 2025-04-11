@@ -1,6 +1,6 @@
 ﻿@using System.Security.Claims
 @{
-	var userEmail = Context.User.FindFirst(ClaimTypes.Email)?.Value;
+	var userEmail = Context.User.FindFirst(ClaimTypes.Name)?.Value;
 }
 <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="position: sticky; top: 0">
 	<!-- Left navbar links -->
@@ -17,7 +17,8 @@
 		</li>
 
 		<li class="nav-item px-3">
-			<a asp-action="Logout" asp-controller="AdminAccount">Đăng xuất</a>
+			<a asp-action="Logout" asp-controller="AdminUsers" asp-area="Admin" style="text-decoration: none">
+				Đăng xuất <i class="fas fa-sign-out-alt"></i></a>
 		</li>
 	</ul>
 </nav>

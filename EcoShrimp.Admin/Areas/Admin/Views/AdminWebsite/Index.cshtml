@@ -1,0 +1,133 @@
+﻿@model EcoShrimp.Admin.Areas.Admin.ViewModels.Shrimp.ShrimpVM
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+	<div class="row fs-4 pt-2 align-items-center">
+		<div class="col-auto">
+			<span class="" style="font-size: 25px">Thông tin Website</span>
+		</div>
+		<div class="col  d-flex justify-content-end">
+			<button type="submit" class="btn btn-primary js-btn-import" style="margin-left: 10px">
+				<i class="far fa-edit"></i> &nbsp; Cập nhật
+			</button>
+		</div>
+	</div>
+	<hr />
+
+	<div class="row">
+		<div class="col-sm-6 pe-3">
+			<div class="row g-3">
+				<div class="col " style="padding-left: 0">
+					<input asp-for="Id" class="d-none" />
+					<label class="control-label">Tên Website:<span style="color: red;">*</span></label>
+					<input asp-for="WebsiteName" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="WebsiteName" class="text-danger"></span>
+				</div>
+				<div class="col " style="padding-left: 0">
+					<label class="control-label">Email website:<span style="color: red;">*</span></label>
+					<input asp-for="Email" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row g-3  mt-2">
+				<div class="col " style="padding-left: 0">
+					<label class="control-label">Số điện thoại:<span style="color: red;">*</span></label>
+					<input asp-for="Phone" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="Phone" class="text-danger"></span>
+				</div>
+				<div class="col " style="padding-left: 0">
+					<label class="control-label">Số điện thoại kỹ thuật:</label>
+					<input asp-for="SubPhone" class="form-control" style="border-radius: 0px; height: 32px" />
+					<span asp-validation-for="SubPhone" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 4px">
+				<div class="col-12 p-0 ms-2 ">
+					<label class="control-label m-0">Ảnh đại diện:</label>
+					<div class="row w-100 position-relative d-flex justify-content-center align-items-center" onmouseover="this.style.cursor='pointer';">
+						<div class="col-12 p-0 mt-2 mx-3" style="opacity: 1;">
+							<div class="row text-center justify-content-center align-items-center"
+								 style="border: dotted 2px rgb(139, 139, 139); height: 176px; position: relative; margin-left: 10px">
+								@if (!string.IsNullOrEmpty(Model.LogoUrl))
+								{
+									<img class="img-preview position-absolute" src="@Model.LogoUrl"
+										 style="width: 100%; height: 100%;" />
+									<i class="fas fa-times-circle remove-image position-absolute"
+									   style="top: -15px; right: -15px; color: red; cursor: pointer; display: none; font-size: 25px"></i>
+								}
+								else
+								{
+									<i class="fas fa-cloud-upload-alt" style="font-size: 50px; color: rgb(10, 176, 202)"></i>
+									<img class="img-preview position-absolute d-block"
+										 style="width: 100%; height: 100%; " />
+								}
+							</div>
+						</div>
+						<div class="col-12 p-0 mt-2 mx-3 position-absolute" style="opacity: 0;">
+							<input data-preview="0" id="fileInput" class="file-input" asp-for="FormFile" type="file"
+								   style="height: 176px; width: 600px; " accept="image/*" />
+						</div>
+					</div>
+					<span class="fs-6 text-success position-relative" asp-validation-for="LogoUrl" style="left: -10px;" id="labelImgPost"></span>
+				</div>
+			</div>
+
+
+		</div>
+		<div class="col-sm-6 " style="padding:0 0 0 25px;">
+			<div class="form-group m-0 pb-2">
+				<div class="row g-3">
+					<div class="col-6">
+						<label class="control-label">Thời gian mở cửa:</label>
+						<input asp-for="OpentTime" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="OpentTime" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Logan website:</label>
+						<input asp-for="Logan" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Logan" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row g-3">
+					<div class="col-12  mt-2">
+						<label class="control-label">Link gg Map:</label>
+						<input asp-for="Map" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Map" class="text-danger"></span>
+					</div>
+					<div class="col-12  mt-2">
+						<label class="control-label">Địa chỉ công ty</label>
+						<input asp-for="Address" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Address" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row g-3  mt-2">
+					<div class="col-6">
+						<label class="control-label">Link Facebook:</label>
+						<input asp-for="FacebookUrl" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="FacebookUrl" class="text-danger"></span>
+					</div>
+					<div class="col-6">
+						<label class="control-label">Link Intergram:</label>
+						<input asp-for="InstagramUrl" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="InstagramUrl" class="text-danger"></span>
+					</div>
+					<div class="col-6 mt-2">
+						<label class="control-label">Link Twitter:</label>
+						<input asp-for="TwitterUrl" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="TwitterUrl" class="text-danger"></span>
+					</div>
+					<div class="col-6 mt-2">
+						<label class="control-label">Link Youtobe:</label>
+						<input asp-for="YouTubeUrl" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="YouTubeUrl" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 p-0">
+			<div class="image-preview-container form-group" id="images">
+			</div>
+		</div>
+	</div>
+</form>

@@ -48,9 +48,8 @@
 
 			</section>
 		</div>
-		<footer class="main-footer">
-			EcoShrimp, Công nghệ IoT – Đồng hành cùng người nuôi tôm trong kỷ nguyên số!
-		</footer>
+
+		@await Component.InvokeAsync("ClientFooter")
 
 	</div>
 	@RenderSection("print", false)

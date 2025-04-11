@@ -14,6 +14,7 @@ namespace EcoShrimp.Client.Views.Shared.Components.Contact
 
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
+			TempData["shrimp"] = _DbContext.AppShrimps.FirstOrDefault();
 			return View();
 		}
 	}

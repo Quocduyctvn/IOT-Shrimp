@@ -21,7 +21,6 @@ namespace EcoShrimp.Data.Entities
 		public DateTime? BuyDate { get; set; }
 		// không tham chiếu
 		public int SortOrder { get; set; }
-		// ----------------------
 		public int? IdFarm { get; set; }
 		public AppFarms appFarm { get; set; }
 		public int IdProduct { get; set; }

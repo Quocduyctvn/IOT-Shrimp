@@ -5,22 +5,25 @@ namespace EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar
 {
 	public class MainNavBarViewComponent : ViewComponent
 	{
-		protected readonly ApplicationDbContext _HotelDbContext;
+		protected readonly ApplicationDbContext _DbContext;
 		public MainNavBarViewComponent(ApplicationDbContext DbContext)
 		{
-			_HotelDbContext = DbContext;
+			_DbContext = DbContext;
 		}
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
+			TempData["shrimp"] = _DbContext.AppShrimps.FirstOrDefault();
+
+
 			var idGroupClaim = HttpContext.User.FindFirst("IdGroup")?.Value;
 
 			var navBar = new NavBarViewModel();
-			navBar.Items.AddRange(new MenuItem[]
+			navBar.Items.AddRange(new MenuItem[]//<i class="fas fa-boxes"></i>
 			{
 				new MenuItem
 				{
 					DisplayText = "Quản lý khách hàng",
-					Icon = "far fa-chart-bar",
+					Icon = "fas fa-users",
 					ChildrenItems = new MenuItem[]
 					{
 						new MenuItem
@@ -28,50 +31,104 @@ namespace EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar
 							Action = "Index",
 							Controller = "AdminFarm",
 							DisplayText = "Quản lý trang trại",
-							Icon = "fas fa-calendar-check"
+							Icon = "fas fa-vector-square"
 						}
 					}
 				},
 				new MenuItem
 				{
-					Action = "Index",
-					Controller = "AdminCategories",
-					DisplayText = "Quản lý loại sản phẫm",
-					Icon = "fas fa-bath",
-					//Permission = AuthConst.AppAmenity.VIEW_LIST,
+					DisplayText = "Giải pháp công nghệ",
+					Icon = "fas fa-project-diagram",
+					ChildrenItems = new MenuItem[]
+					{
+						new MenuItem
+						{
+							Action = "Index",
+							Controller = "AdminCategories",
+							DisplayText = "Quản lý loại sản phẫm",
+							Icon = "fas fa-boxes",
+						},
+						new MenuItem
+						{
+							Action = "Index",
+							Controller = "AdminProduct",
+							DisplayText = "Quản lý Sản phẫm",
+							Icon = "fas fa-crop",
+						},
+					}
 				},
 				new MenuItem
 				{
-					Action = "Index",
-					Controller = "AdminProduct",
-					DisplayText = "Quản lý Sản phẫm",
-					Icon = "fas fa-bath",
-					//Permission = AuthConst.AppAmenity.VIEW_LIST,
+					DisplayText = "Quản lý tin tức",
+					Icon = "fas fa-outdent",
+					ChildrenItems = new MenuItem[]
+					{
+						new MenuItem
+						{
+							Action = "Index",
+							Controller = "AdminCateNews",
+							DisplayText = "Quản lý loại tin",
+							Icon = "fas fa-list-ul",
+							//Permission = AuthConst.AppAmenity.VIEW_LIST, 
+						},
+						new MenuItem
+						{
+							Action = "Index",
+							Controller = "AdminNews",
+							DisplayText = "Quản lý tin tức",
+							Icon = "fas fa-layer-group",
+							//Permission = AuthConst.AppAmenity.VIEW_LIST,
+						},
+					}
+				},
+				new MenuItem
+				{
+					DisplayText = "Quản lý tài khoản",
+					Icon = "fas fa-users-cog",
+					ChildrenItems = new MenuItem[]
+					{
+						new MenuItem
+						{
+							Action = "Index",
+							Controller = "AdminUsers",
+							DisplayText = "Quản lý người dùng",
+							Icon = "fas fa-user-alt",
+							//Permission = AuthConst.AppAmenity.VIEW_LIST,
+						},
+						new MenuItem
+						{
+							Action = "Index",
+							Controller = "AdminRoles",
+							DisplayText = "Quản lý vai trò",
+							Icon = "fas fa-user-tag",
+							//Permission = AuthConst.AppAmenity.VIEW_LIST,
+						},
+					}
 				},
 				new MenuItem
 				{
 					Action = "Index",
 					Controller = "AdminRequest",
 					DisplayText = "Quản lý yêu cầu",
-					Icon = "fas fa-bath",
+					Icon = "fas fa-retweet", 
 					//Permission = AuthConst.AppAmenity.VIEW_LIST,
 				},
 				new MenuItem
 				{
 					Action = "Index",
-					Controller = "AdminCateNews",
-					DisplayText = "Quản lý loại tin",
-					Icon = "fas fa-bath",
-					//Permission = AuthConst.AppAmenity.VIEW_LIST,
+					Controller = "AdminWebsite",
+					DisplayText = "Quản lý website",
+					Icon = "fas fa-cogs",
+					//Permission = AuthConst.AppAmenity.VIEW_LIST, 
 				},
 				new MenuItem
 				{
-					Action = "Index",
-					Controller = "AdminNews",
-					DisplayText = "Quản lý tin tức",
-					Icon = "fas fa-bath",
-					//Permission = AuthConst.AppAmenity.VIEW_LIST,
-				}
+					Action = "SendCode",
+					Controller = "AdminChangepass",
+					DisplayText = "Đổi mật khẩu",
+					Icon = "fas fa-key",
+					//Permission = AuthConst.AppAmenity.VIEW_LIST, 
+				},
 
 
 			});
