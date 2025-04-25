@@ -249,6 +249,9 @@ namespace EcoShrimp.Data.Migrations
                     b.Property<int?>("IdTime")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsNotify")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Location")
                         .HasMaxLength(512)
                         .HasColumnType("varchar(512)");
@@ -782,6 +785,58 @@ namespace EcoShrimp.Data.Migrations
                             GroupName = "Quản lý vai trò",
                             Table = "AppRoles"
                         });
+                });
+
+            modelBuilder.Entity("EcoShrimp.Data.Entities.AppPolicies", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(262144)
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("app_policies", (string)null);
                 });
 
             modelBuilder.Entity("EcoShrimp.Data.Entities.AppPonds", b =>
@@ -1414,7 +1469,7 @@ namespace EcoShrimp.Data.Migrations
                             Email = "quocduyctvn@gmail.com",
                             IdRole = 1,
                             Name = "Quốc Duy",
-                            Pass = "$2a$10$qQz9tM5bpeZBa62L8b5bdOYHt4TWDvBHMZ46BNe1JR/hA.LSKTttW",
+                            Pass = "$2a$10$ZVmh5mJ3AP6/QdNtzeGryu7bwfeXgedIiy5Q9QtEHJbkjcHlCcY1C",
                             Phone = "0901007221",
                             Status = 1
                         });

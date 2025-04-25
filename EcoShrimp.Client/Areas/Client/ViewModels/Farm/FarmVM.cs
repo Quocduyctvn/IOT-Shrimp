@@ -15,12 +15,14 @@ namespace EcoShrimp.Client.Areas.Client.ViewModels.Farm
 		public string? District { get; set; }
 		public string? City { get; set; }
 		public int? IdTime { get; set; }
+		public bool IsNotify { get; set; }
 		public string? Location { get; set; }
 		[Required(ErrorMessage = "Thuộc tính là bắt buột")]
 		[RegularExpression(RegexConst.PHONE_NUMBER, ErrorMessage = "Số điện thoại không hợp lệ!")]
 		public string Phone { get; set; }
+		[Required(ErrorMessage = "Thuộc tính là bắt buột")]
 		[RegularExpression(RegexConst.EMAIL, ErrorMessage = "Email không đúng định dạng")]
-		public string? Email { get; set; }
+		public string Email { get; set; }
 		public string? Avatar { get; set; }
 		[Required(ErrorMessage = "Thuộc tính là bắt buột")]
 		[RegularExpression(RegexConst.PASSWORD, ErrorMessage = "Mật khẩu phải có chữ hoa, chữ thường, số, ký tự đặc biệt và ≥ 6 ký tự.")]

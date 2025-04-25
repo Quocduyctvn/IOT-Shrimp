@@ -28,6 +28,7 @@ namespace EcoShrimp.Data.Entities
 		public string? Desc { get; set; }
 		public Status Status { get; set; }
 		public int SortOrder { get; set; }
+		public bool IsNotify { get; set; }
 		// ----------------------
 		public int? IdTime { get; set; }
 		//----------------------  

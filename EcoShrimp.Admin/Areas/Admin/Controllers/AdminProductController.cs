@@ -369,6 +369,7 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 		{
 			var proInstan = _DbContext.AppProInstances.Include(x => x.appProducts)
 												.ThenInclude(x => x.appCategory)
+												.Include(x => x.appFarm)
 												.Where(x => x.IdProduct == id & x.Status != Status.Deleted)
 												.AsQueryable();
 			if (proInstan == null)

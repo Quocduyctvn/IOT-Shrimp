@@ -1,10 +1,10 @@
-﻿
-@using EcoShrimp.Client.Areas.Client.ViewModels.Pond
+﻿@using EcoShrimp.Client.Areas.Client.ViewModels.Pond
 @using EcoShrimp.Share.Enums
 @model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppPonds>
 
 @{
 	int stt = 1;
+	ViewData["Title"] = "Quản lý ao nuôi";
 }
 <div class="row w-100 fs-4 ">
 	<span class="ps-2" style="font-size: 25px; padding-left: 5px">Danh sách Vuông ao</span>
@@ -89,7 +89,7 @@
 <partial name="_Pager" /> 
 
 @await Html.PartialAsync("_CreatePond", new PondVM())
-@await Html.PartialAsync("_UpdatePond", new PondVM())
+@* @await Html.PartialAsync("_UpdatePond", new PondVM()) *@
 @await Html.PartialAsync("_DeletePond")
 <script>
 	function confirmDelete(id) {

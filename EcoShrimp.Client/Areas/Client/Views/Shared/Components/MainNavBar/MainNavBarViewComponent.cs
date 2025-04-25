@@ -51,28 +51,20 @@ namespace EcoShrimp.Client.Areas.Client.Views.Shared.Components.MainNavBar
 				},
 				new MenuItem
 				{
+					Action = "Index",
+					Controller = "ClientHistory",
+					DisplayText = "Lịch sử nuôi trồng",
+					Icon = "fas fa-history",
+					//Permission = AuthConst.AppAmenity.VIEW_LIST,
+				},
+				new MenuItem
+				{
 					Action = "SendCode",
 					Controller = "ClientAccount",
 					DisplayText = "Đổi mật khẩu",
 					Icon = "fas fa-lock",
 					//Permission = AuthConst.AppAmenity.VIEW_LIST,
 				},
-				//new MenuItem
-				//{
-				//	Action = "Index",
-				//	Controller = "AdminProduct",
-				//	DisplayText = "Quản lý Sản phẫm",
-				//	Icon = "fas fa-bath",
-				//	//Permission = AuthConst.AppAmenity.VIEW_LIST,
-				//},
-				//new MenuItem
-				//{
-				//	Action = "Index",
-				//	Controller = "AdminUnit",
-				//	DisplayText = "Quản lý đơn vị đo",
-				//	Icon = "fas fa-bath",
-				//	//Permission = AuthConst.AppAmenity.VIEW_LIST,
-				//}
 
 
 			});

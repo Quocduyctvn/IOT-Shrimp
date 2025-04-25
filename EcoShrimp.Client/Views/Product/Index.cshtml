@@ -2,6 +2,7 @@
 @model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppProducts>
 @{
 	var products = TempData["Products"] as List<AppProducts>;
+	ViewData["Title"] = "Danh sách sản phẫm";
 }
 <section class="breadcrumb-area pb-0">
 	<div class="breadcrumb-area-bg" style="background-image: url(/assets-template/images/product-detail/149d5084711t53633l0.jpg); height: 270px"></div>

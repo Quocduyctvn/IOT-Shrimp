@@ -26,7 +26,7 @@ namespace EcoShrimp.Data
 		public DbSet<AppRolePermission> AppRolePermission { get; set; }
 		public DbSet<AppPermissions> AppPermissions { get; set; }
 		public DbSet<AppShrimp> AppShrimps { get; set; }
-
+		public DbSet<AppPolicies> AppPolicies { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)  // Fluent API
 		{
 			base.OnModelCreating(modelBuilder);

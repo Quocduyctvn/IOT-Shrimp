@@ -1,3 +1,4 @@
+using EcoShrimp.Client.Services;
 using EcoShrimp.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 	});
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHostedService<TimedHostedService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -23,10 +23,11 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			ClaimsIdentity identity = (ClaimsIdentity)User.Identity!;
 			var IdClaim = identity.FindFirst("ID")?.Value;
 			int IdFarm = int.Parse(IdClaim);
-			var farm = _DbContext.AppFarms.Include(x => x.appProInstances)
+			var farm = _DbContext.AppFarms
+											.Include(x => x.appProInstances)
 											.ThenInclude(x => x.appProducts)
 											.ThenInclude(x => x.appCategory)
-										.Include(x => x.appPonds)
+										.Include(x => x.appPonds.Where(x => x.Status != Status.Deleted))
 										.ThenInclude(x => x.appSeasons)
 										.ThenInclude(x => x.appConnects)
 										.ThenInclude(x => x.appProInstances)
@@ -279,6 +280,46 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			{
 				return Json(new { error = "Lỗi khi lấy dữ liệu: " + ex.Message });
 			}
+		}
+
+		public async Task<JsonResult> GetDataEnd(int idConnect)
+		{
+			try
+			{
+				var sensorData = await _DbContext.AppDataSensor
+					.Where(x => x.IdConnect == idConnect)
+					.OrderByDescending(x => x.Id)
+					.Select(x => new
+					{
+						x.CreatedDate,
+						PH = (decimal)x.PH,    // Chuyển sang decimal
+						Temp = (decimal)x.Temp,
+						DO = (decimal)x.DO,
+						Nh4 = (decimal)x.Nh4,
+						Sal = (decimal)x.Sal,
+						Tur = (decimal)x.Tur,
+						Tds = (decimal)x.Tds
+					})
+					.FirstOrDefaultAsync();
+
+				return Json(sensorData);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { error = "Lỗi khi lấy dữ liệu: " + ex.Message });
+			}
+		}
+
+		private string GetTwoDecimalPlaces(double value)
+		{
+			string valueString = value.ToString();
+			int decimalPointIndex = valueString.IndexOf('.');
+
+			if (decimalPointIndex >= 0 && decimalPointIndex + 3 <= valueString.Length)
+			{
+				return valueString.Substring(0, decimalPointIndex + 3); // Lấy 2 chữ số sau dấu chấm
+			}
+			return valueString; // Trả về giá trị gốc nếu không có phần thập phân
 		}
 	}
 }

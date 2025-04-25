@@ -209,7 +209,6 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 			return relativePath; // Trả về đường dẫn tương đối
 		}
 
-
 		public IActionResult Plus(int id)
 		{
 			var news = _DbContext.AppNews.OrderBy(x => x.SortOrder).ToList();

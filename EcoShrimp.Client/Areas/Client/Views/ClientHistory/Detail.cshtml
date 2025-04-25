@@ -1,0 +1,129 @@
+﻿@model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppSeasons>
+@{
+	int stt = 1;
+	int? childStt = 1;
+	ViewData["Title"] = "Chi tiết lịch sử quan trắc";
+}
+
+<div class="row fs-4 pt-2 align-items-center">
+	<div class="col-auto">
+		<span class="" style="font-size: 20px"><a asp-action="Index" style="text-decoration: none">Lịch sử nuôi trồng</a></span>
+		<span class="" style="font-size: 17px">
+			/ Chi tiết đợt nuôi tại ao
+			@if (Model.FirstOrDefault() != null && Model.FirstOrDefault().appPond != null)
+			{
+				@Model.FirstOrDefault().appPond.Name
+			}
+		</span>
+
+	</div>
+</div>
+<hr />
+
+@if (Model.Count() > 0)
+{
+	<div class="table-responsive mt-3">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th style="width: 50px ">#</th>
+					<th>Tên vụ nuôi</th>
+					<th style="width: 215px" class="text-center">Thời gian</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr data-toggle="collapse" data-target="#collapse-@item.Id" aria-expanded="false" aria-controls="collapse-@item.Id" style="cursor: pointer">
+						<td style="vertical-align: middle;">@stt</td>
+						<td style="vertical-align: middle;">
+							<span>
+								@item.Name
+								<i class="fas fa-info-circle" style="margin-left: 4px; color: #cacaca"></i>
+							</span>
+						</td>
+						<td style="vertical-align: middle;" class="text-center">
+							@item.StartDate.ToString("dd/MM/yyyy")
+							<i class="fas fa-arrow-alt-circle-right" style="color: #5aabf5 "></i>
+							@if (@item.EndDate == null)
+							{
+								<span>Đến nay</span>
+							}
+							else
+							{
+								@item.EndDate?.ToString("dd/MM/yyyy")
+							}
+						</td>
+					</tr>
+					<tr class="collapse" id="collapse-@item.Id">
+						<td colspan="3">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Tên thiết bị quan trắc</th>
+										<th style="width: 140px; vertical-align: middle;" class="text-center">Tổng bảng ghi</th>
+										<th style="width: 210px; vertical-align: middle;" class="text-center">TG bắt đầu -> Kết thúc</th>
+										<th style="width: 135px"></th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var childItem in item.appConnects)
+									{
+										<tr>
+											<td>@($"{stt}.{childStt}")</td>
+											<td>
+												@childItem.appProInstances.Name
+											</td>
+											<td style="vertical-align: middle;" class="text-center">@childItem.appDataSensors.Count</td>
+											<td style="vertical-align: middle;" class="text-center">
+												@childItem.StartDate.ToString("dd/MM/yyyy")
+												<i class="fas fa-arrow-alt-circle-right" style="color: #5aabf5 "></i>
+												@if (@childItem.EndDate == null)
+												{
+													<span>Đến nay</span>
+												}
+												else
+												{
+													@childItem.EndDate?.ToString("dd/MM/yyyy")
+												}
+											</td>
+											<td style="vertical-align: middle;" class="text-center">
+												<button id="exportExcel" class="btn btn-success mt-2" onclick="funcExport(@item.Id)">
+													<i class="fas fa-file-excel"></i> Xuất Excel
+												</button>
+											</td>
+										</tr>
+										childStt++;
+									}
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					stt++;
+					childStt = 1;
+				}
+			</tbody>
+		</table>
+	</div>
+
+	<partial name="_Pager" />
+}
+else
+{
+	<div class="col p-0 mt-2">
+		<div class="text-center">
+			<span class="text-primary">
+				<i>
+					Không có lịch sử ghi dữ liệu!!
+				</i>
+			</span>
+		</div>
+	</div>
+}
+<partial name="_BackToList" />
+<script>
+	function funcExport(id){
+		window.location.href = `/ClientHistory/ExportExcel?id=${id}`;
+	}
+</script>

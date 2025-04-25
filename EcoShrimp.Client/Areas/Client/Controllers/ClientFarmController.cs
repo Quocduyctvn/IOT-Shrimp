@@ -2,7 +2,6 @@
 using EcoShrimp.Client.Areas.Client.Controllers.Base;
 using EcoShrimp.Client.Areas.Client.ViewModels.Device;
 using EcoShrimp.Client.Areas.Client.ViewModels.Farm;
-using EcoShrimp.Client.Areas.Client.ViewModels.Time;
 using EcoShrimp.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -38,6 +37,7 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			farmVM.Ward = farm.Ward;
 			farmVM.NumberHouse = farm.NumberHouse;
 			farmVM.Desc = farm.Desc;
+			farmVM.IsNotify = farm.IsNotify;
 			farmVM.Avatar = farm.Avatar;
 			farmVM.IdTime = farm.IdTime;
 
@@ -89,13 +89,15 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 			farm.OwnerName = model.OwnerName;
 			farm.FarmName = model.FarmName;
 			farm.Phone = model.Phone;
-			farm.Email = model.Email != null ? model.Email : "";
+			farm.Email = model.Email;
 			farm.City = model.City != "0" ? model.City : "";
 			farm.District = model.District != "0" ? model.District : "";
 			farm.Ward = model.Ward != "0" ? model.Ward : "";
 			farm.NumberHouse = model.NumberHouse != null ? model.NumberHouse : "";
 			farm.Desc = model.Desc != null ? model.Desc : "";
 			farm.UpdatedDate = DateTime.Now;
+			farm.IsNotify = model.IsNotify;
+			farm.IdTime = model.IdTime;
 			if (model.FormFile != null)
 			{
 				if (farm.Avatar != null)
@@ -143,33 +145,5 @@ namespace EcoShrimp.Client.Areas.Client.Controllers
 
 			return relativePath; // Trả về đường dẫn tương đối
 		}
-
-		[HttpPost]
-		public async Task<IActionResult> UpdateIdTime([FromBody] UpdateTimeVM dto)
-		{
-			try
-			{
-				if (dto == null || dto.IdFarm <= 0)
-				{
-					return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
-				}
-
-				var appFarm = await _DbContext.AppFarms.FindAsync(dto.IdFarm);
-				if (appFarm == null)
-				{
-					return NotFound(new { message = "AppFarm không tồn tại!" });
-				}
-
-				appFarm.IdTime = dto.IdTime;
-				await _DbContext.SaveChangesAsync();
-
-				return Ok(new { message = "Cập nhật thành công!" });
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(500, new { message = "Lỗi server!", error = ex.Message });
-			}
-		}
-
 	}
 }

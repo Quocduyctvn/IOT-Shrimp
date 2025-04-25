@@ -1,9 +1,11 @@
 using EcoShrimp.Admin.Controllers.Base;
 using EcoShrimp.Admin.Models;
 using EcoShrimp.Data;
+using EcoShrimp.Share.Const;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -33,7 +35,10 @@ namespace EcoShrimp.Admin.Controllers
 				return RedirectToAction("Index", model);
 			}
 
-			var user = _DbContext.AppUsers.FirstOrDefault(x => x.Phone == model.Phone);
+			var user = _DbContext.AppUsers
+									.Include(x => x.appRole)
+									.ThenInclude(x => x.appRolePermissions)
+									.FirstOrDefault(x => x.Phone == model.Phone);
 			if (user == null)
 			{
 				SetErrorMesg("Thông tin đăng nhập không hợp lệ!!");
@@ -47,12 +52,14 @@ namespace EcoShrimp.Admin.Controllers
 				return RedirectToAction("Index", model);
 			}
 
+			var per = string.Join(',', user.appRole.appRolePermissions.Select(rp => rp.IdPermission));
 			var claims = new List<Claim>
 							{
 								new Claim(ClaimTypes.MobilePhone, user.Phone),
 								new Claim(ClaimTypes.Name, user.Name),
 								new Claim(("ID"), user.Id.ToString()),
 								new Claim(ClaimTypes.Role , "Admin"),
+								new Claim(AppClaimTypes.Permissions,  per),
 							};
 			var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 			var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

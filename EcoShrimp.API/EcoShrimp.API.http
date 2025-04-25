@@ -1,0 +1,6 @@
+@EcoShrimp.API_HostAddress = http://localhost:5101
+
+GET {{EcoShrimp.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

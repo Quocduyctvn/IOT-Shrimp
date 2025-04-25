@@ -44,6 +44,7 @@ namespace EcoShrimp.Client.Controllers
 				SetErrorMesg("tài khoản đã bị khóa - vui lòng liên hệ admin");
 				return View(model);
 			}
+
 			var checkPass = BCrypt.Net.BCrypt.Verify(model?.Pass, farm.PassWord);
 			if (!checkPass)
 			{

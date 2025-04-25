@@ -1,100 +1,121 @@
 ﻿@using EcoShrimp.Admin.Areas.Admin.ViewModels.Products
+@using EcoShrimp.Share.Const
 @using EcoShrimp.Share.Enums
+@using EcoShrimp.Share.Extension
 @model X.PagedList.PagedList<EcoShrimp.Data.Entities.AppFarms>
 
 @{
 	int stt = 1;
+	ViewData["Title"] = "Danh sách trang trại";
 }
 <div class="row w-100 fs-4 ">
 	<span class="ps-2" style="font-size: 25px">Danh sách trang trại</span>
 </div>
 <hr />
 
-<form asp-action="Index">
-	<div class="row">
-		<div class="col-12">
-			<div class="row">
-				<button type="button" class="btn btn-primary w-auto rounded-1 col-2 ms-1 text-light">
-					<a asp-action="Create" asp-controller="AdminFarm" style="color: white">
-						<i class="fas fa-plus-circle"></i> Thêm mới
-					</a>
-				</button>
-				<div class="mx-1"></div>
-				<div class="col-3 p-0 ms-4">
-					<input type="text" name="keyword" placeholder="Bạn cần tìm gì ..." class="form-control" style="border-radius: 7px 0 0 7px" />
+@if (User.IsInPermission(AuthConst.AppFarms.CREATE))
+{
+	<form asp-action="Index">
+		<div class="row">
+			<div class="col-12">
+				<div class="row">
+					<button type="button" class="btn btn-primary w-auto rounded-1 col-2 ms-1 text-light">
+						<a asp-action="Create" asp-controller="AdminFarm" style="color: white">
+							<i class="fas fa-plus-circle"></i> Thêm mới
+						</a>
+					</button>
+					<div class="mx-1"></div>
+					<div class="col-3 p-0 ms-4">
+						<input type="text" name="keyword" placeholder="Bạn cần tìm gì ..." class="form-control" style="border-radius: 7px 0 0 7px" />
+					</div>
+					<button type="submit" class="col-auto p-0 border border-none px-2" style="border-radius: 0 7px 7px 0">Tìm Kiếm</button>
 				</div>
-				<button type="submit" class="col-auto p-0 border border-none px-2" style="border-radius: 0 7px 7px 0">Tìm Kiếm</button>
 			</div>
 		</div>
-	</div>
-</form>
+	</form>
+}
 
 
-<div class="table-responsive mt-3">
-	<table class="table table-bordered table-hover">
-		<thead>
-			<tr>
-				<th style="width: 50px ">#</th>
-				<th>Thông tin  trang trại</th>
-				<th class="justify-content-center text-center " style="width: 70px ">Sl ao </th>
-				<th class="justify-content-center text-center " style="width: 95px ">Sl thiết bị</th>
-				<th style="width: 150px "></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model)
-			{
+@if (User.IsInPermission(AuthConst.AppFarms.VIEW_LIST))
+{
+	<div class="table-responsive mt-3">
+		<table class="table table-bordered table-hover">
+			<thead>
 				<tr>
-					<td style="vertical-align: middle;">@stt</td>
-					<td style="align-items: center; gap: 5px; vertical-align: middle;">
-						<a asp-action="Detail" asp-controller="AdminFarm" asp-route-id="@item.Id" style="color: black">
-							<span style="">
-								<span style="font-weight: bold">Khách hàng: </span> @item.OwnerName  @if (item.City != null)
-								{
-									<span> - Địa chỉ: @item.City </span>
-								}
-							</span>
-							<div class="h5">Cơ sở: @item.FarmName <i class="fas fa-info-circle" style="font-size: 18px; color: cornflowerblue"></i></div>
-						</a>
-					</td>
-					<td class="justify-content-center text-center " style="align-items: center; gap: 5px; vertical-align: middle;">
-						<span>@item.appPonds.Count </span>
-					</td>
-					<td class="justify-content-center text-center " style="align-items: center; gap: 5px; vertical-align: middle;">
-						<span>@item.appProInstances.Count </span>
-					</td>
-
-					<td class="justify-content-center text-center " style="vertical-align: middle;">
-						<a asp-action="Subtr" asp-controller="AdminFarm" asp-route-id="@item.Id" class="pt-2">
-							<i class="fas fa-arrow-alt-circle-up"></i>
-						</a>
-						<a asp-action="Plus" asp-controller="AdminFarm" asp-route-id="@item.Id" class="pt-2">
-							<i class="fas fa-arrow-alt-circle-down"></i>
-						</a>
-
-
-						<button type="button" class="text-primary px-2 btn btn-outline-light border border-sacondary">
-							<a asp-action="Update" asp-controller="AdminFarm" asp-route-id="@item.Id">
-								<i class="far fa-edit fs-5"></i>
-							</a>
-						</button>
-						<button type="button" class=" px-2 btn btn-outline-light border border-sacondary ">
-							<a asp-action="Delete" asp-controller="AdminFarm" asp-route-id="@item.Id">
-								<i class="fas fa-trash-alt fs-5 text-danger"></i>
-							</a>
-						</button>
-					</td>
+					<th style="width: 50px ">#</th>
+					<th>Thông tin  trang trại</th>
+					<th class="justify-content-center text-center " style="width: 70px ">Sl ao </th>
+					<th class="justify-content-center text-center " style="width: 95px ">Sl thiết bị</th>
+					<th style="width: 150px "></th>
 				</tr>
-				stt++;
-			}
-		</tbody>
-	</table>
-	@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
-	{
-		<div class="text-center">
-			<span class="text-danger"><i>Kết quả tìm kiếm [@Model.Count()] item </i></span> <a asp-action="Index" class="text-decoration-none text-center" style="display: inline-block">Đặt lại</a>
-		</div>
-	}
-</div>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td style="vertical-align: middle;">@stt</td>
+						<td style="align-items: center; gap: 5px; vertical-align: middle;">
+							<a asp-action="Detail" asp-controller="AdminFarm" asp-route-id="@item.Id" style="color: black">
+								<span style="">
+									<span style="font-weight: bold">Khách hàng: </span> @item.OwnerName  @if (item.City != null)
+									{
+										<span> - Địa chỉ: @item.City </span>
+									}
+								</span>
+								<div class="h5">Cơ sở: @item.FarmName <i class="fas fa-info-circle" style="font-size: 18px; color: cornflowerblue"></i></div>
+							</a>
+						</td>
+						<td class="justify-content-center text-center " style="align-items: center; gap: 5px; vertical-align: middle;">
+							<span>@item.appPonds.Count </span>
+						</td>
+						<td class="justify-content-center text-center " style="align-items: center; gap: 5px; vertical-align: middle;">
+							<span>@item.appProInstances.Count </span>
+						</td>
 
- <partial name="_Pager" /> 
+						<td class="justify-content-center text-center " style="vertical-align: middle;">
+							<a asp-action="Subtr" asp-controller="AdminFarm" asp-route-id="@item.Id" class="pt-2">
+								<i class="fas fa-arrow-alt-circle-up"></i>
+							</a>
+							<a asp-action="Plus" asp-controller="AdminFarm" asp-route-id="@item.Id" class="pt-2">
+								<i class="fas fa-arrow-alt-circle-down"></i>
+							</a>
+
+
+							@if (User.IsInPermission(AuthConst.AppFarms.UPDATE))
+							{
+								<button type="button" class="text-primary px-2 btn btn-outline-light border border-sacondary">
+									<a asp-action="Update" asp-controller="AdminFarm" asp-route-id="@item.Id">
+										<i class="far fa-edit fs-5"></i>
+									</a>
+								</button>
+							}
+
+							@if (User.IsInPermission(AuthConst.AppFarms.DELETE))
+							{
+								<button type="button" class=" px-2 btn btn-outline-light border border-sacondary ">
+									<a asp-action="Delete" asp-controller="AdminFarm" asp-route-id="@item.Id">
+										<i class="fas fa-trash-alt fs-5 text-danger"></i>
+									</a>
+								</button>
+							}
+						</td>
+					</tr>
+					stt++;
+				}
+			</tbody>
+		</table>
+		@if (TempData["searched"] != null && !string.IsNullOrEmpty(TempData["searched"]!.ToString()))
+		{
+			<div class="text-center">
+				<span class="text-danger"><i>Kết quả tìm kiếm [@Model.Count()] item </i></span> <a asp-action="Index" class="text-decoration-none text-center" style="display: inline-block">Đặt lại</a>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<div class="text-center">
+		<span class="text-danger"><i>Bạn không có quyền xem danh sách</i></span>
+	</div>
+}
+<partial name="_Pager" />

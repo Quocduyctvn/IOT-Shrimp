@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-@model EcoShrimp.Admin.Models.LoginVM
+﻿@model EcoShrimp.Admin.Models.LoginVM
 @{
     ViewData["Title"] = "Đăng nhập hệ thống";
 }
@@ -63,7 +59,7 @@
                                             <!-- Số điện thoại -->
                                             <div class="mb-3">
                                                 <label for="phoneNumber" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                                                <input asp-for="Phone" type="text" id="phoneNumber" class="form-control" placeholder="Nhập Số điện thoại" style="padding-left: 0" required>
+                                                <input asp-for="Phone" type="text" id="phoneNumber" class="form-control px-2" placeholder="Nhập Số điện thoại" style="padding-left: 0" required>
                                                 <div class="invalid-feedback">Số điện thoại không hợp lệ. Vui lòng nhập từ 10 đến 11 chữ số.</div>
                                             </div>
 
@@ -71,7 +67,7 @@
                                             <div class="mb-3">
                                                 <label for="userPassword" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
                                                 <div class="position-relative">
-                                                    <input asp-for="Pass" type="password" id="userPassword" class="form-control pe-5" style="padding-left: 0" placeholder="***********" required>
+                                                    <input asp-for="Pass" type="password" id="userPassword" class="form-control px-2" style="padding-left: 0" placeholder="***********" required>
                                                     <i id="togglePassword" class="fas fa-eye-slash" style="color: black; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                                     <div class="invalid-feedback">Mật khẩu không được để trống.</div>
                                                 </div>

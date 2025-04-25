@@ -5,7 +5,63 @@
 	int stt = 1;
 	var proInstans = TempData["proInstans"] as List<AppProInstances>;
 	var times = TempData["times"] as List<AppTimeIntervals>;
+	ViewData["Title"] = "Quản lý trang trại";
 }
+<style>
+	.toggle-container {
+		margin-top: 50px;
+	}
+
+	/* The actual switch */
+	.toggle {
+		position: relative;
+		display: inline-block;
+		width: 50px; /* Smaller width */
+		height: 24px; /* Smaller height */
+	}
+
+		/* Hide the default checkbox */
+		.toggle input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+	/* The slider (background) */
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		transition: 0.4s;
+		border-radius: 34px;
+	}
+
+		/* The slider circle (knob) */
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 16px; /* Smaller knob */
+			width: 16px; /* Smaller knob */
+			border-radius: 50%;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			transition: 0.4s;
+		}
+
+	/* When the checkbox is checked, move the slider knob */
+	input:checked + .slider {
+		background-color: #4CAF50;
+	}
+
+		input:checked + .slider:before {
+			transform: translateX(28px); /* Adjust the knob position */
+		}
+</style>
 
 <form asp-action="Index" method="post" enctype="multipart/form-data">
 	<div class="row fs-4 pt-2 align-items-center">
@@ -36,13 +92,13 @@
 				</div>
 			</div>
 			@* Hình ảnh *@
-			<div class="row" style="margin-top: 4px">
+			<div class="row" style="margin-top: 7px">
 				<div class="col-4 p-0 ms-2">
 					<label class="control-label m-0">Ảnh đại diện:</label>
 					<div class="row w-100 position-relative" onmouseover="this.style.cursor='pointer';">
 						<div class="col p-0 mt-2 mx-3" style="opacity: 1;">
 							<div class="row text-center justify-content-center align-items-center"
-								 style="border: dotted 2px rgb(139, 139, 139); height: 176px; position: relative;">
+								 style="border: dotted 2px rgb(139, 139, 139); height: 187px; position: relative;">
 								<i class="fas fa-cloud-upload-alt" style="font-size: 50px; color: rgb(10, 176, 202)"></i>
 								@if (!string.IsNullOrEmpty(Model.Avatar))
 								{
@@ -60,15 +116,33 @@
 						</div>
 						<div class="col p-0 mt-2 mx-3 position-absolute" style="opacity: 0;">
 							<input data-preview="0" id="fileInput" class="file-input" asp-for="FormFile" type="file"
-								   style="height: 176px; width: auto; " accept="image/*" />
+								   style="height: 187px; width: auto; " accept="image/*" />
 						</div>
 					</div>
 					<span class="fs-6 text-success position-relative" asp-validation-for="FormFile" style="left: -10px;" id="labelImgPost"></span>
 				</div>
-				<div class="col">
-					<label class="control-label">Mô tả ngắn:</label>
-					<textarea asp-for="Desc" class="form-control" style="border-radius: 0px; height: 176px"></textarea>
-					<span asp-validation-for="Desc" class="text-danger"></span>
+				<div class="col px-3">
+					<div class="row">
+						<label class="control-label">Thời gian đọc dữ liệu</label>
+						<select id="filter-month" asp-for="IdTime" class="form-control">
+							@foreach (var item in times)
+							{
+								if (Model.IdTime == item.Id)
+								{
+									<option value="@item.Id" selected >@item.Label</option>
+								}
+								else
+								{
+									<option value="@item.Id">@item.Label</option>
+								}
+							}
+						</select>
+					</div>
+					<div class="row mt-1">
+						<label class="control-label">Ghi chú:</label>
+						<textarea asp-for="Desc" class="form-control" style="border-radius: 0px; height: 116px"></textarea>
+						<span asp-validation-for="Desc" class="text-danger"></span>
+					</div>
 				</div>
 				<span asp-validation-for="FormFile" class="text-danger"></span>
 			</div>
@@ -84,12 +158,16 @@
 						<span asp-validation-for="Phone" class="text-danger"></span>
 					</div>
 					<div class="col-6">
-						<label class="control-label">Email:</label>
-						<input asp-for="Email" class="form-control" style="border-radius: 0px; height: 32px" />
-						<span asp-validation-for="Email" class="text-danger"></span>
+						<label class="control-label mb-0">Thông báo vượt ngưỡng an toàn</label>
+						<div class="toggle-container mt-0">
+							<label class="toggle ms-2 mt-2">
+								<input type="checkbox" asp-for="IsNotify">
+								<span class="slider"></span>
+							</label>
+						</div>
 					</div>
 				</div>
-				<div class="row g-3 mt-1">
+				<div class="row g-3 " style="margin-top: 7px">
 					<div class="col position-relative">
 						<label class="control-label">Mật khẩu đăng nhập:<span style="color: red;">*</span></label>
 						<div class="input-group">
@@ -97,8 +175,14 @@
 						</div>
 						<span asp-validation-for="PassWord" class="text-danger"></span>
 					</div>
+					<div class="col position-relative">
+						<label class="control-label">Email: <span style="color: red;">*</span></label>
+						<input asp-for="Email" class="form-control" style="border-radius: 0px; height: 32px" />
+						<span asp-validation-for="Email" class="text-danger"></span>
+					</div>
+
 				</div>
-				<div class="row g-3">
+				<div class="row g-3" style="margin-top: 9px">
 					<div class="col-6">
 						<label class="control-label">Thành phố:</label>
 						<select id="provinces" asp-for="City" class="form-control rounded-1 w-100 border border-2 border-none px-4">
@@ -114,7 +198,7 @@
 						<span asp-validation-for="District" class="text-danger"></span>
 					</div>
 				</div>
-				<div class="row g-3">
+				<div class="row g-3" style="margin-top: 5px">
 					<div class="col-6">
 						<label class="control-label">Xã/phường:</label>
 						<select id="wards" asp-for="Ward" class="form-control rounded-1 w-100 border border-2 border-none px-4">
@@ -122,7 +206,7 @@
 						</select>
 						<span asp-validation-for="Ward" class="text-danger"></span>
 					</div>
-					<div class="col-6">
+					<div class="col-6" style="margin-top: 5px">
 						<label class="control-label">Số nhà:</label>
 						<input asp-for="NumberHouse" class="form-control" style="border-radius: 0px; height: 32px" />
 						<span asp-validation-for="NumberHouse" class="text-danger"></span>
@@ -138,35 +222,6 @@
 		</div>
 	</div>
 </form>
-
-<div class="mt-3">
-	<div class="row fs-4 pt-2 align-items-center">
-		<div class="col-md-3 p-0 mb-1 pt-1" style="border-top: 2px solid #a55d0799;">
-			<span class="" style="font-size: 19px">Thiết lặp khoảng cách điểm biểu đồ</span>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col p-0">
-			<div class="col-md-3 p-0 d-flex flex-column">
-				<select id="filter-month" class="form-control" data-farm-id="@Model.Id" onchange="updateTimeFarm(this)">
-					@foreach (var item in times)
-					{
-						if (Model.IdTime == item.Id)
-						{
-							<option value="@item.Id" selected data-value="@item.Value">@item.Label</option>
-						}
-						else
-						{
-							<option value="@item.Id" data-value="@item.Value">@item.Label</option>
-						}
-					}
-				</select>
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <div class="mt-3" style="border-top: 2px solid #a55d0799;">
 	<div class="row fs-4 pt-2 align-items-center">
@@ -246,30 +301,6 @@
 		}
 </style>
 
-<script>
-	function updateTimeFarm(selectElement) {
-		var selectedId = selectElement.value;
-		 var farmId = selectElement.getAttribute("data-farm-id");
-
-		var requestData = { IdFarm: farmId, IdTime: selectedId };
-
-		console.log("Dữ liệu gửi lên:", requestData); // ✅ Kiểm tra dữ liệu trước khi gửi
-
-		$.ajax({
-			url: "/ClientFarm/UpdateIdTime",
-			type: "POST",
-			contentType: "application/json",
-			data: JSON.stringify(requestData),
-			success: function(response) {
-				console.log("Cập nhật thành công:", response);
-				window.location.reload();
-			},
-			error: function(error) {
-				console.error("Lỗi khi cập nhật!", error);
-			}
-		});
-	}
-</script>
 <script>
 
 	function togglePassword() {

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<EcoShrimp.Data.Entities.AppPonds>
+@{
+	ViewData["Title"] = "Lịch sử quan trắc";
+}
+
+<div class="row fs-4 pt-2 align-items-center">
+	<div class="col-auto">
+		<span class="" style="font-size: 20px"> Lịch sử nuôi trồng theo mùa vụ/ đợt nuôi</span>
+	</div>
+</div>
+<hr />
+<div class="row w-100 px-3 mt-4 d-flex justify-content-center ">
+	@foreach(var item in Model){
+		<div class="col-xl-3 col-md-6 p-0 mx-3">
+			<a asp-action="Detail" asp-controller="ClientHistory" asp-area="Client" asp-route-id="@item.Id" class="text-decoration-none">
+				<div class="card text-white mb-4" style="background-color: #76b2e5">
+					<div class="row w-100 mt-3  text-light" style="height: 70px">
+						<div class="col-11 p-0">
+							<div class="row fs-3">
+								<span class="fw-bold" style="padding-left: 25px">Tổng số mùa vụ: @item.appSeasons.Count()</span>
+							</div>
+							<div class="row ps-2" style="padding-left: 25px; font-size: 22px; margin-top: 6px">@item.Name</div>
+						</div>
+						<div class="col-1 p-0 ms-auto mt-1" style="">
+							<i class="fas fa-align-right fs-1"></i>
+						</div>
+					</div>
+					<div class="row " style="padding:0 8px">
+						<div class="col mt-3 justify-content-center  text-light py-2" style="background-color:#3b91db">
+							<div class="p-0 mx-auto ">Xem chi tiết lịch sử<i class="fas fa-arrow-circle-right" style="margin-left: 4px"></i></div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+	}
+</div>

@@ -14,11 +14,10 @@ namespace EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar
 		{
 			TempData["shrimp"] = _DbContext.AppShrimps.FirstOrDefault();
 
-
 			var idGroupClaim = HttpContext.User.FindFirst("IdGroup")?.Value;
 
 			var navBar = new NavBarViewModel();
-			navBar.Items.AddRange(new MenuItem[]//<i class="fas fa-boxes"></i>
+			navBar.Items.AddRange(new MenuItem[]	//<i class="fas fa-boxes"></i>
 			{
 				new MenuItem
 				{
@@ -59,7 +58,7 @@ namespace EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar
 				},
 				new MenuItem
 				{
-					DisplayText = "Quản lý tin tức",
+					DisplayText = "Quản lý bài viết",
 					Icon = "fas fa-outdent",
 					ChildrenItems = new MenuItem[]
 					{
@@ -83,7 +82,7 @@ namespace EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar
 				},
 				new MenuItem
 				{
-					DisplayText = "Quản lý tài khoản",
+					DisplayText = "Tài khoản&Phân quyền",
 					Icon = "fas fa-users-cog",
 					ChildrenItems = new MenuItem[]
 					{
@@ -104,6 +103,14 @@ namespace EcoShrimp.Admin.Areas.Admin.Views.Shared.Components.MainNavBar
 							//Permission = AuthConst.AppAmenity.VIEW_LIST,
 						},
 					}
+				},
+				new MenuItem
+				{
+					Action = "Index",
+					Controller = "AdminPolicies",
+					DisplayText = "Quản lý chính sách",
+					Icon = "fas fa-shield-alt", 
+					//Permission = AuthConst.AppAmenity.VIEW_LIST,
 				},
 				new MenuItem
 				{

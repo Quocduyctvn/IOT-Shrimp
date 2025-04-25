@@ -4,6 +4,7 @@
 
 @{
 	int stt = 1;
+	ViewData["Title"] = "Chi tiết sản phẫm";
 }
 <div class="row w-100 fs-4 ">
 	<span class="ps-2" style="font-size: 25px">Phiên bản sản phẫm</span>
@@ -76,8 +77,8 @@
 					<td class="justify-content-center text-center " style="width: 80px; vertical-align: middle;">
 						@if (item.Status == Status.Bought)
 						{
-							<button type="button" disabled class=" px-2 btn btn-outline-light border border-sacondary ">
-									<i class="fas fa-trash-alt fs-5 text-danger"></i>
+							<button type="button" class=" px-2 btn btn-outline-light border border-sacondary " onclick="fncInforBill('@item.appFarm.FarmName', '@item.appFarm.OwnerName', '@item.Name', '@item.SeriNumber', '@item.BuyDate')">
+								<i class="fas fa-cog text-primary"></i>
 							</button>
 						}
 						else
@@ -111,6 +112,7 @@
 @await Html.PartialAsync("_AddQuantity", new QuantityVM())
 
 @await Html.PartialAsync("_DeleteProInstan")
+	@await Html.PartialAsync("_InfoBill")
 <script>
 	function confirmDelete(id) {
 		const deleteUrl = `/Admin/AdminProduct/DeleteInstance/${id}`;

@@ -24,7 +24,7 @@
 								<img src="@item.appImges.FirstOrDefault().Path" alt="">
 							</div>
 							<div class="overlay-icon">
-								<a href="#"><span class="icon-water-dispenser"></span></a>
+								<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id"><span class="icon-water-dispenser"></span></a>
 							</div>
 						</div>
 						<div class="title-holder">
@@ -57,8 +57,10 @@
 		</div>
 
 		<div class="row">
-			<div class="col-xl-12">
-				<div class="service-style1_btns-box text-center pt-0">
+			<div class="col-xl-9">
+			</div>
+			<div class="col-xl-3">
+				<div class="btns-box" style="margin-left: 90px">
 					<a class="btn-one" asp-action="Index" asp-controller="Product">
 						<div class="round"></div>
 						<span class="txt">Xem tất cả</span>

@@ -28,6 +28,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Update="Areas\Admin\Views\AdminProduct\_InfoBill.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="Views\Shared\_Noti.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -35,6 +39,7 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <Folder Include="wwwroot\images\policies\" />
     <Folder Include="wwwroot\images\news\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>

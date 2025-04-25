@@ -79,6 +79,7 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 			}
 			_DbContext.AppFarms.Add(farm);
 			_DbContext.SaveChanges();
+
 			SetSuccessMesg("Thêm mới thành công.");
 			return RedirectToAction("Index");
 		}
@@ -207,6 +208,12 @@ namespace EcoShrimp.Admin.Areas.Admin.Controllers
 				SetErrorMesg("Không tìm thấy sản phẩm");
 				return RedirectToAction("Detail", new { id = farmId });
 			}
+			var product = _DbContext.AppProducts.FirstOrDefault(x => x.Id == proInstan.IdProduct);
+			product.StockQuantity -= 1;
+			_DbContext.Update(product);
+			_DbContext.SaveChanges();
+
+
 			var farm = _DbContext.AppFarms.FirstOrDefault(x => x.Id == farmId);
 			if (farm == null)
 			{
